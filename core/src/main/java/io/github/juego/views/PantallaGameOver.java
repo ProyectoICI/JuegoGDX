@@ -1,10 +1,11 @@
-package io.github.juego;
+package io.github.juego.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.juego.SpaceNavigation;
 
 
 public class PantallaGameOver implements Screen {
@@ -33,7 +34,7 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().end();
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaJuego(game,1,3,0,1,1,10);
+			Screen ss = new PantallaJuego(game);
 			ss.resize(1200, 800);
 			game.setScreen(ss);
 			dispose();

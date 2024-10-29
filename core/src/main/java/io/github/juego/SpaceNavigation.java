@@ -4,8 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-
+import io.github.juego.views.PantallaMenu;
 
 
 public class SpaceNavigation extends Game {
@@ -13,6 +12,13 @@ public class SpaceNavigation extends Game {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private int highScore;
+
+    // Variables por defecto para el juego
+    private int vidasDefault = 3;
+    private int rondaDefault = 1;
+    private int velXAsteroidesDefault = 1;
+    private int velYAsteroidesDefault = 1;
+    private int cantAsteroidesDefault = 10;
 
 	public void create() {
 		highScore = 0;
@@ -49,5 +55,25 @@ public class SpaceNavigation extends Game {
 	}
 
 
+    // Setters y Getters para las variables por defecto
+    public int getVidasDefault() { return vidasDefault; }
+
+    public void setVidasDefault(int vidasDefault) { this.vidasDefault = vidasDefault; }
+
+    public int getRondaDefault() { return rondaDefault; }
+
+    public void setRondaDefault(int rondaDefault) { this.rondaDefault = rondaDefault; }
+
+    public int getVelXAsteroidesDefault() { return velXAsteroidesDefault; }
+
+    public void setVelXAsteroidesDefault(int velXAsteroidesDefault) { this.velXAsteroidesDefault = velXAsteroidesDefault; }
+
+    public int getVelYAsteroidesDefault() { return velYAsteroidesDefault; }
+
+    public void setVelYAsteroidesDefault(int velYAsteroidesDefault) { this.velYAsteroidesDefault = velYAsteroidesDefault; }
+
+    public int getCantAsteroidesDefault() { return cantAsteroidesDefault; }
+
+    public void setCantAsteroidesDefault(int cantAsteroidesDefault) { this.cantAsteroidesDefault = cantAsteroidesDefault; }
 
 }
