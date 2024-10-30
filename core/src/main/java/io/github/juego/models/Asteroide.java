@@ -47,10 +47,12 @@ public class Asteroide extends GameObject implements Colisionable {
     }
 
     @Override
-    public void checkCollision(GameObject asteroide) {
+    public boolean checkCollision(GameObject asteroide) {
         if(spr.getBoundingRectangle().overlaps(asteroide.getSpr().getBoundingRectangle())){
             onCollision(asteroide);
+            return true;
         }
+        return false;
     }
 
     @Override

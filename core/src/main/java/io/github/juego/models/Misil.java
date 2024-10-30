@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Misil extends GameObject {
+public class Misil extends GameObject implements Colisionable{
 
 	private float xSpeed;
 	private float ySpeed;
@@ -33,15 +33,16 @@ public class Misil extends GameObject {
     }
 
     // TODO: Implementar la interfaz
-    public boolean checkCollision(Asteroide b2) {
-        if(spr.getBoundingRectangle().overlaps(b2.getArea())){
+    public boolean checkCollision(GameObject asteroide) {
+        if(spr.getBoundingRectangle().overlaps(asteroide.getArea())){
             // Se destruyen ambos
-            this.destroyed = true;
+            onCollision(asteroide);
             return true;
-
         }
         return false;
     }
+
+    public void onCollision(GameObject asteroide) { this.destroyed = true; }
 
     public void draw(SpriteBatch batch) {
         spr.draw(batch);

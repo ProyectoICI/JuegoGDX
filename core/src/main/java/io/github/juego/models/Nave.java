@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import io.github.juego.views.PantallaJuego;
 
 
-public class Nave extends GameObject {
+public class Nave extends GameObject implements Colisionable{
 
 	private boolean destruida = false;
     private int vidas = 3;
@@ -85,40 +85,44 @@ public class Nave extends GameObject {
         }
     }
 
-    public void draw(SpriteBatch batch) { spr.draw(batch); }
 
     // TODO: Implementar la interfaz
-    public boolean checkCollision(Asteroide asteroide) {
+    @Override
+    public boolean checkCollision(GameObject asteroide) {
         if(!herido && asteroide.getArea().overlaps(spr.getBoundingRectangle())){
-        	// rebote
-            if (xVel ==0) xVel += asteroide.getVelocityX() / 2;
-            if (asteroide.getVelocityX() ==0) asteroide.setVelocityX(asteroide.getVelocityX() + xVel/2);
-            xVel = - xVel;
-            asteroide.setVelocityX(-asteroide.getVelocityX());
-
-            if (yVel ==0) yVel += asteroide.getVelocityY() /2;
-            if (asteroide.getVelocityY() ==0) asteroide.setVelocityY(asteroide.getVelocityY() + yVel/2);
-            yVel = - yVel;
-            asteroide.setVelocityY(- asteroide.getVelocityY());
-
-        	//actualizar vidas y herir
-            vidas--;
-            herido = true;
-  		    tiempoHerido=tiempoHeridoMax;
-  		    sonidoHerido.play();
-            if (vidas<=0)
-          	    destruida = true;
+            onCollision(asteroide);
             return true;
         }
         return false;
     }
 
-    public boolean estaDestruido() {
-       return !herido && destruida;
+    @Override
+    public void onCollision(GameObject asteroide) {
+        // rebote
+        if (xVel ==0) xVel += asteroide.getVelocityX() / 2;
+        if (asteroide.getVelocityX() ==0) asteroide.setVelocityX(asteroide.getVelocityX() + xVel/2);
+        xVel = - xVel;
+        asteroide.setVelocityX(-asteroide.getVelocityX());
+
+        if (yVel ==0) yVel += asteroide.getVelocityY() /2;
+        if (asteroide.getVelocityY() ==0) asteroide.setVelocityY(asteroide.getVelocityY() + yVel/2);
+        yVel = - yVel;
+        asteroide.setVelocityY(- asteroide.getVelocityY());
+
+        //actualizar vidas y herir
+        vidas--;
+        herido = true;
+        tiempoHerido=tiempoHeridoMax;
+        sonidoHerido.play();
+        if (vidas<=0) {
+            destruida = true;
+        }
     }
-    public boolean estaHerido() {
- 	   return herido;
-    }
+
+    public void draw(SpriteBatch batch) { spr.draw(batch); }
+
+    public boolean estaDestruido() { return !herido && destruida; }
+    public boolean estaHerido() { return herido; }
 
     public void setVidas(int vidas2) {vidas = vidas2;}
     public int getVidas() {return vidas;}
@@ -133,5 +137,6 @@ public class Nave extends GameObject {
     public float getSpiteWidth() { return spr.getWidth(); }
 
     public float getSpiteHeight() { return spr.getHeight(); }
+
 
 }

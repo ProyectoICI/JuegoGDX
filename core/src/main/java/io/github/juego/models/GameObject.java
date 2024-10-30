@@ -2,6 +2,7 @@ package io.github.juego.models;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class GameObject {
     protected float x, y;  // Position
@@ -27,6 +28,8 @@ public abstract class GameObject {
 
     public void setVelocityX(float velocityX) { this.velocityX = velocityX; }
     public void setVelocityY(float velocityY) { this.velocityY = velocityY; }
+
+    public Rectangle getArea() { return spr.getBoundingRectangle(); }
 
     public Sprite getSpr() { return spr; }
     public void setSpr(Sprite spr) { this.spr = spr; }
