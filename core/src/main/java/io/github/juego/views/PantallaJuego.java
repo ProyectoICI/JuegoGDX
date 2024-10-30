@@ -26,14 +26,14 @@ public class PantallaJuego implements Screen {
 	private Music gameMusic;
 	private int score;
 	private int ronda;
-	private int velXAsteroides;
-	private int velYAsteroides;
+	private float velXAsteroides;
+	private float velYAsteroides;
 	private int cantAsteroides;
 
 	private Nave nave;
-	private  ArrayList<Asteroide> balls1 = new ArrayList<>();
-	private  ArrayList<Asteroide> balls2 = new ArrayList<>();
-	private  ArrayList<Misil> balas = new ArrayList<>();
+	private ArrayList<Asteroide> asteroides1 = new ArrayList<>();
+	private ArrayList<Asteroide> asteroides2 = new ArrayList<>();
+	private ArrayList<Misil> balas = new ArrayList<>();
 
     // Constructor que utiliza variables predefinidas para inicializar el juego al inicio
     public PantallaJuego(SpaceNavigation game) {
@@ -54,7 +54,7 @@ public class PantallaJuego implements Screen {
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
 
         gameMusic.setLooping(true);
-        gameMusic.setVolume(0.5f);
+        gameMusic.setVolume(0.4f);
         gameMusic.play();
 
         // Se inicializa la nave
@@ -67,18 +67,21 @@ public class PantallaJuego implements Screen {
         // Se crean los asteroides
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
-            Asteroide bb = new Asteroide(r.nextInt((int)Gdx.graphics.getWidth()),
+            Asteroide bb = new Asteroide(
+                1+r.nextInt((int)Gdx.graphics.getWidth()),
                 50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-                20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4),
+                20+r.nextInt(10),
+                velXAsteroides+r.nextFloat(4),
+                velYAsteroides+r.nextFloat(4),
                 new Texture(Gdx.files.internal("aGreyMedium4.png")));
-            balls1.add(bb);
-            balls2.add(bb);
+            asteroides1.add(bb);
+            asteroides2.add(bb);
         }
     }
 
     // Constructor para cargar las pantallas de juego de rondas subsiguientes
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
-			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+			float velXAsteroides, float velYAsteroides, int cantAsteroides) {
 		this.game = game;
 		this.ronda = ronda;
 		this.score = score;
@@ -91,7 +94,7 @@ public class PantallaJuego implements Screen {
 		camera.setToOrtho(false, 800, 640);
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-		explosionSound.setVolume(1,0.5f);
+		explosionSound.setVolume(1,0.1f);
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
 
 		gameMusic.setLooping(true);
@@ -107,12 +110,15 @@ public class PantallaJuego implements Screen {
         //crear asteroides
         Random r = new Random();
 	    for (int i = 0; i < cantAsteroides; i++) {
-	        Asteroide bb = new Asteroide(r.nextInt((int)Gdx.graphics.getWidth()),
+	        Asteroide asteroideNuevo = new Asteroide(
+                    r.nextInt((int)Gdx.graphics.getWidth()),
 	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4),
+	  	            20+r.nextInt(10),
+                    velXAsteroides+r.nextFloat(4),
+                    velYAsteroides+r.nextFloat(4),
 	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")));
-	  	    balls1.add(bb);
-	  	    balls2.add(bb);
+	  	    asteroides1.add(asteroideNuevo);
+	  	    asteroides2.add(asteroideNuevo);
 	  	}
 	}
 
@@ -124,8 +130,9 @@ public class PantallaJuego implements Screen {
 		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
-	@Override
-    public void render(float delta) {
+
+    @Override
+	public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         dibujaEncabezado();
@@ -135,11 +142,11 @@ public class PantallaJuego implements Screen {
             for (int i = 0; i < balas.size(); i++) {
                 Misil b = balas.get(i);
                 b.update();
-                for (int j = 0; j < balls1.size(); j++) {
-                    if (b.checkCollision(balls1.get(j))) {
+                for (int j = 0; j < asteroides1.size(); j++) {
+                    if (b.checkCollision(asteroides1.get(j))) {
                         explosionSound.play();
-                        balls1.remove(j);
-                        balls2.remove(j);
+                        asteroides1.remove(j);
+                        asteroides2.remove(j);
                         j--;
                         score += 10;
                     }
@@ -152,17 +159,17 @@ public class PantallaJuego implements Screen {
                 }
             }
             // Actualizar movimiento de asteroides dentro del area
-            for (Asteroide ball : balls1) {
-                ball.update();
+            for (Asteroide ast : asteroides1) {
+                ast.update(delta);
             }
 
             // Colisiones entre asteroides y sus rebotes
-            for (int i = 0; i < balls1.size(); i++) {
-                Asteroide ball1 = balls1.get(i);
-                for (int j = 0; j < balls2.size(); j++) {
-                    Asteroide asteroide = balls2.get(j);
+            for (int i = 0; i < asteroides1.size(); i++) {
+                Asteroide ast1 = asteroides1.get(i);
+                for (int j = 0; j < asteroides2.size(); j++) {
+                    Asteroide ast2 = asteroides2.get(j);
                     if (i < j) {
-                        ball1.checkCollision(asteroide);
+                        ast1.checkCollision(ast2);
 
                     }
                 }
@@ -174,19 +181,19 @@ public class PantallaJuego implements Screen {
             b.draw(batch);
         }
 
-        nave.draw(batch, this);
+        nave.draw(batch, this, delta);
 
         // Dibujar asteroides y manejo de colisiones
-        for (int i = 0; i < balls1.size(); i++) {
-            Asteroide b = balls1.get(i);
+        for (int i = 0; i < asteroides1.size(); i++) {
+            Asteroide b = asteroides1.get(i);
             b.draw(batch);
 
             // Perdió vida / Game over
             if (nave.checkCollision(b)) {
 
                 // Asteroide se destruye con el choque
-                balls1.remove(i);
-                balls2.remove(i);
+                asteroides1.remove(i);
+                asteroides2.remove(i);
                 i--;
             }
         }
@@ -202,7 +209,7 @@ public class PantallaJuego implements Screen {
         batch.end();
 
         // Nivel completado!
-        if (balls1.isEmpty()) {
+        if (asteroides1.isEmpty()) {
             cargarNuevaRonda();
         }
 
@@ -210,11 +217,11 @@ public class PantallaJuego implements Screen {
 
     // En este metodo podemos ajustar la dificultad de cada ronda directamente
     private void cargarNuevaRonda() {
-        int velAgregada = 3;
+        float multVelocidad = 1.5F;
         int asteroidesAgregados = 10;
 
         Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score,
-            velAgregada, velAgregada, cantAsteroides + asteroidesAgregados);
+            multVelocidad, multVelocidad, cantAsteroides + asteroidesAgregados);
         ss.resize(1200, 800);
         game.setScreen(ss);
         dispose();

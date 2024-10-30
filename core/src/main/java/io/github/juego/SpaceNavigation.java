@@ -16,8 +16,8 @@ public class SpaceNavigation extends Game {
     // Variables por defecto para el juego
     private int vidasDefault = 3;
     private int rondaDefault = 1;
-    private int velXAsteroidesDefault = 1;
-    private int velYAsteroidesDefault = 1;
+    private int velXAsteroidesDefault = 6;
+    private int velYAsteroidesDefault = 6;
     private int cantAsteroidesDefault = 10;
 
 	public void create() {

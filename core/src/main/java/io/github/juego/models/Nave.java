@@ -24,7 +24,7 @@ public class Nave {
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
 
-    public Nave(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    public Nave(float x, float y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
     	sonidoHerido = soundChoque;
     	this.soundBala = soundBala;
     	this.txBala = txBala;
@@ -36,15 +36,23 @@ public class Nave {
     }
 
     // TODO: Utilizar una especie de deltaTime para actualizar la posicion de la nave
-    public void draw(SpriteBatch batch, PantallaJuego juego){
-        float x =  spr.getX();
-        float y =  spr.getY();
+    public void draw(SpriteBatch batch, PantallaJuego juego, float delta) {
+        float x = spr.getX();
+        float y = spr.getY();
         if (!herido) {
-	        // que se mueva con teclado
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) xVel--;
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) xVel++;
-        	if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) yVel--;
-	        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) yVel++;
+            // que se mueva con teclado
+            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+                xVel-=60;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+                xVel+=60;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN))  {
+                yVel-=60;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))  {
+                yVel+=60;
+            }
 
 	        /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
 	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
@@ -60,43 +68,44 @@ public class Nave {
 
 	        }*/
 
-	        // que se mantenga dentro de los bordes de la ventana
-	        if (x+xVel < 0 || x+xVel+spr.getWidth() > Gdx.graphics.getWidth())
-	        	xVel*=-1;
-	        if (y+yVel < 0 || y+yVel+spr.getHeight() > Gdx.graphics.getHeight())
-	        	yVel*=-1;
+            // que se mantenga dentro de los bordes de la ventana
+            if (x + xVel * delta < 0 || x + xVel * delta + spr.getWidth() > Gdx.graphics.getWidth())
+                xVel *= -1;
+            if (y + yVel * delta < 0 || y + yVel * delta + spr.getHeight() > Gdx.graphics.getHeight())
+                yVel *= -1;
 
-	        spr.setPosition(x+xVel, y+yVel);
+            spr.setPosition(x + xVel * delta, y + yVel * delta);
 
- 		    spr.draw(batch);
+            spr.draw(batch);
         } else {
-           spr.setX(spr.getX()+MathUtils.random(-2,2));
- 		   spr.draw(batch);
- 		  spr.setX(x);
- 		   tiempoHerido--;
- 		   if (tiempoHerido<=0) herido = false;
- 		 }
+            spr.setX(spr.getX() + MathUtils.random(-2, 2));
+            spr.draw(batch);
+            spr.setX(x);
+            tiempoHerido--;
+            if (tiempoHerido <= 0) herido = false;
+        }
+
         // disparo
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-          Misil bala = new Misil(spr.getX()+spr.getWidth()/2-5,spr.getY()+ spr.getHeight()-5,0,3,txBala);
-	      juego.agregarBala(bala);
-	      soundBala.play();
+            Misil bala = new Misil(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+            juego.agregarBala(bala);
+            soundBala.play();
         }
 
     }
 
-    public boolean checkCollision(Asteroide b) {
-        if(!herido && b.getArea().overlaps(spr.getBoundingRectangle())){
+    public boolean checkCollision(Asteroide asteroide) {
+        if(!herido && asteroide.getArea().overlaps(spr.getBoundingRectangle())){
         	// rebote
-            if (xVel ==0) xVel += (float) b.getXSpeed() /2;
-            if (b.getXSpeed() ==0) b.setXSpeed(b.getXSpeed() + (int)xVel/2);
+            if (xVel ==0) xVel += asteroide.getVelocityX() / 2;
+            if (asteroide.getVelocityX() ==0) asteroide.setVelocityX(asteroide.getVelocityX() + xVel/2);
             xVel = - xVel;
-            b.setXSpeed(-b.getXSpeed());
+            asteroide.setVelocityX(-asteroide.getVelocityX());
 
-            if (yVel ==0) yVel += (float) b.getySpeed() /2;
-            if (b.getySpeed() ==0) b.setySpeed(b.getySpeed() + (int)yVel/2);
+            if (yVel ==0) yVel += asteroide.getVelocityY() /2;
+            if (asteroide.getVelocityY() ==0) asteroide.setVelocityY(asteroide.getVelocityY() + yVel/2);
             yVel = - yVel;
-            b.setySpeed(- b.getySpeed());
+            asteroide.setVelocityY(- asteroide.getVelocityY());
 
         	//actualizar vidas y herir
             vidas--;
