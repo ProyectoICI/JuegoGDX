@@ -2,6 +2,7 @@ package io.github.juego.models;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.juego.views.PantallaJuego;
 
 public abstract class GameObject {
     protected float x, y;  // Position
@@ -27,6 +28,8 @@ public abstract class GameObject {
 
     public void setVelocityX(float velocityX) { this.velocityX = velocityX; }
     public void setVelocityY(float velocityY) { this.velocityY = velocityY; }
+
+
 
     // Metodo abstracto para el renderizado
     public abstract void draw(SpriteBatch batch);

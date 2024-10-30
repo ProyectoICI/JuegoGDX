@@ -6,14 +6,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Misil {
+public class Misil extends GameObject {
 
-	private int xSpeed;
-	private int ySpeed;
+	private float xSpeed;
+	private float ySpeed;
 	private boolean destroyed = false;
 	private Sprite spr;
 
-    public Misil(float x, float y, int xSpeed, int ySpeed, Texture tx) {
+    public Misil(float x, float y, float xSpeed, float ySpeed, Texture tx) {
+        super(x, y, xSpeed, ySpeed);
         spr = new Sprite(tx);
         spr.setPosition(x, y);
         this.xSpeed = xSpeed;
@@ -21,8 +22,8 @@ public class Misil {
     }
 
     // TODO: Utilizar una especie de deltaTime para la actualización de posición.
-    public void update() {
-        spr.setPosition(spr.getX()+xSpeed, spr.getY()+ySpeed);
+    public void update(float delta) {
+        spr.setPosition(spr.getX()+xSpeed * delta, spr.getY()+ySpeed * delta);
         if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth()) {
             destroyed = true;
         }

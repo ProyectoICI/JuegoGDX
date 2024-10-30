@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -23,7 +24,9 @@ public class PantallaJuego implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Sound explosionSound;
+    private Sound soundBala;
 	private Music gameMusic;
+    private Texture txBala;
 	private int score;
 	private int ronda;
 	private float velXAsteroides;
@@ -57,8 +60,15 @@ public class PantallaJuego implements Screen {
         gameMusic.setVolume(0.4f);
         gameMusic.play();
 
+        soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+        txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+
         // Se inicializa la nave
-        nave = new Nave(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+        nave = new Nave(Gdx.graphics.getWidth()/2-50,
+            30,
+            0,
+            0,
+            new Texture(Gdx.files.internal("MainShip3.png")),
             Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
             new Texture(Gdx.files.internal("Rocket2.png")),
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
@@ -101,8 +111,15 @@ public class PantallaJuego implements Screen {
 		gameMusic.setVolume(0.5f);
 		gameMusic.play();
 
+        soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+        txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+
 	    // cargar imagen de la nave, 64x64
-	    nave = new Nave(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+	    nave = new Nave(Gdx.graphics.getWidth()/2-50,
+                        30,
+                        0,
+                        0,
+                        new Texture(Gdx.files.internal("MainShip3.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
 	    				new Texture(Gdx.files.internal("Rocket2.png")),
 	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
@@ -140,10 +157,10 @@ public class PantallaJuego implements Screen {
 
             // Colisiones entre balas y su destrucción
             for (int i = 0; i < balas.size(); i++) {
-                Misil b = balas.get(i);
-                b.update();
+                Misil misil = balas.get(i);
+                misil.update(delta);
                 for (int j = 0; j < asteroides1.size(); j++) {
-                    if (b.checkCollision(asteroides1.get(j))) {
+                    if (misil.checkCollision(asteroides1.get(j))) {
                         explosionSound.play();
                         asteroides1.remove(j);
                         asteroides2.remove(j);
@@ -153,8 +170,8 @@ public class PantallaJuego implements Screen {
                 }
 
                 //   b.draw(batch);
-                if (b.isDestroyed()) {
-                    balas.remove(b);
+                if (misil.isDestroyed()) {
+                    balas.remove(misil);
                     i--; // Para no saltarse 1 tras eliminar en el ArrayList
                 }
             }
@@ -177,11 +194,12 @@ public class PantallaJuego implements Screen {
         }
 
         // Dibujar las balas
-        for (Misil b : balas) {
-            b.draw(batch);
+        for (Misil misil : balas) {
+            misil.draw(batch);
         }
 
-        nave.draw(batch, this, delta);
+        nave.update(delta);
+        nave.draw(batch);
 
         // Dibujar asteroides y manejo de colisiones
         for (int i = 0; i < asteroides1.size(); i++) {
@@ -211,6 +229,17 @@ public class PantallaJuego implements Screen {
         // Nivel completado!
         if (asteroides1.isEmpty()) {
             cargarNuevaRonda();
+        }
+
+        // disparo
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            Misil bala = new Misil(nave.getX() + nave.getSpiteWidth() / 2 - 5,
+                                    nave.getY() + nave.getSpiteHeight() - 5,
+                                    0,
+                                    300,
+                                    txBala);
+            this.agregarBala(bala);
+            soundBala.play();
         }
 
     }

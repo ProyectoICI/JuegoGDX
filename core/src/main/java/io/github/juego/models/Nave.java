@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import io.github.juego.views.PantallaJuego;
 
 
-public class Nave {
+public class Nave extends GameObject {
 
 	private boolean destruida = false;
     private int vidas = 3;
@@ -24,8 +24,9 @@ public class Nave {
     private int tiempoHeridoMax=50;
     private int tiempoHerido;
 
-    public Nave(float x, float y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-    	sonidoHerido = soundChoque;
+    public Nave(float x, float y, float xVel, float yVel, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    	super(x, y, xVel, yVel);
+        sonidoHerido = soundChoque;
     	this.soundBala = soundBala;
     	this.txBala = txBala;
     	spr = new Sprite(tx);
@@ -35,8 +36,8 @@ public class Nave {
 
     }
 
-    // TODO: Utilizar una especie de deltaTime para actualizar la posicion de la nave
-    public void draw(SpriteBatch batch, PantallaJuego juego, float delta) {
+    @Override
+    public void update(float delta) {
         float x = spr.getX();
         float y = spr.getY();
         if (!herido) {
@@ -76,23 +77,16 @@ public class Nave {
 
             spr.setPosition(x + xVel * delta, y + yVel * delta);
 
-            spr.draw(batch);
         } else {
             spr.setX(spr.getX() + MathUtils.random(-2, 2));
-            spr.draw(batch);
             spr.setX(x);
             tiempoHerido--;
             if (tiempoHerido <= 0) herido = false;
         }
-
-        // disparo
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Misil bala = new Misil(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-            juego.agregarBala(bala);
-            soundBala.play();
-        }
-
     }
+
+    // TODO: Utilizar una especie de deltaTime para actualizar la posicion de la nave
+    public void draw(SpriteBatch batch) { spr.draw(batch); }
 
     public boolean checkCollision(Asteroide asteroide) {
         if(!herido && asteroide.getArea().overlaps(spr.getBoundingRectangle())){
@@ -130,7 +124,14 @@ public class Nave {
     public int getVidas() {return vidas;}
 
     //public boolean isDestruida() {return destruida;}
-    public int getX() {return (int) spr.getX();}
-    public int getY() {return (int) spr.getY();}
+    @Override
+    public float getX() {return spr.getX();}
+
+    @Override
+    public float getY() {return spr.getY();}
+
+    public float getSpiteWidth() { return spr.getWidth(); }
+
+    public float getSpiteHeight() { return spr.getHeight(); }
 
 }
