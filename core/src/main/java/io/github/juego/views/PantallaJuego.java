@@ -27,11 +27,13 @@ public class PantallaJuego implements Screen {
     private Sound soundBala;
 	private Music gameMusic;
     private Texture txBala;
-	private int score;
+	private Texture backgroundImage;
+    private int score;
 	private int ronda;
 	private float velXAsteroides;
 	private float velYAsteroides;
 	private int cantAsteroides;
+
 
 	private Nave nave;
 	private ArrayList<Asteroide> asteroides1 = new ArrayList<>();
@@ -62,6 +64,7 @@ public class PantallaJuego implements Screen {
 
         soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
         txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         // Se inicializa la nave
         nave = new Nave(Gdx.graphics.getWidth()/2-50,
@@ -113,6 +116,7 @@ public class PantallaJuego implements Screen {
 
         soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
         txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
 	    // cargar imagen de la nave, 64x64
 	    nave = new Nave(Gdx.graphics.getWidth()/2-50,
@@ -142,16 +146,21 @@ public class PantallaJuego implements Screen {
     // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
 	public void dibujaEncabezado() {
 		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
-		game.getFont().getData().setScale(2f);
+		game.getFont().getData().setScale(1f);
 		game.getFont().draw(batch, str, 10, 30);
 		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
 		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
 	}
 
+    private void dibujarFondo(SpriteBatch batch) {
+        batch.draw(backgroundImage, 0, 0, 1200, 800);
+    }
+
     @Override
 	public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        dibujarFondo(batch);
         dibujaEncabezado();
         if (!nave.estaHerido()) {
 
