@@ -1,12 +1,12 @@
 package io.github.juego.models;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.juego.views.PantallaJuego;
 
 public abstract class GameObject {
     protected float x, y;  // Position
     protected float velocityX, velocityY;  // Velocity
+    private Sprite spr;
 
     // Constructor
     public GameObject(float x, float y, float xSpeed, float ySpeed) {
@@ -29,7 +29,8 @@ public abstract class GameObject {
     public void setVelocityX(float velocityX) { this.velocityX = velocityX; }
     public void setVelocityY(float velocityY) { this.velocityY = velocityY; }
 
-
+    public Sprite getSpr() { return spr; }
+    public void setSpr(Sprite spr) { this.spr = spr; }
 
     // Metodo abstracto para el renderizado
     public abstract void draw(SpriteBatch batch);

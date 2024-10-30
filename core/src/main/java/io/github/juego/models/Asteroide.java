@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 
-public class Asteroide extends GameObject {
+public class Asteroide extends GameObject implements Colisionable {
 	private float x;
     private float y;
     private float xSpeed;
@@ -49,19 +49,25 @@ public class Asteroide extends GameObject {
 
 
     // TODO: Posiblemente tambien se deba de usar deltaTime para el checkeo de rebotes
-    public void checkCollision(Asteroide asteroide) {
-        if(spr.getBoundingRectangle().overlaps(asteroide.spr.getBoundingRectangle())){
-            // rebote
-            if (getVelocityX() ==0) setVelocityX(getVelocityX() + asteroide.getVelocityX()/2);
-            if (asteroide.getVelocityX() ==0) asteroide.setVelocityX(asteroide.getVelocityX() + getVelocityX()/2);
-            setVelocityX(- getVelocityX());
-            asteroide.setVelocityX(-asteroide.getVelocityX());
-
-            if (getVelocityY() ==0) setVelocityY(getVelocityY() + asteroide.getVelocityY()/2);
-            if (asteroide.getVelocityY() ==0) asteroide.setVelocityY(asteroide.getVelocityY() + getVelocityY()/2);
-            setVelocityY(- getVelocityY());
-            asteroide.setVelocityY(- asteroide.getVelocityY());
+    @Override
+    public void checkCollision(GameObject asteroide) {
+        if(spr.getBoundingRectangle().overlaps(asteroide.getSpr().getBoundingRectangle())){
+            onCollision(asteroide);
         }
+    }
+
+    @Override
+    public void onCollision(GameObject asteroide) {
+        // rebote
+        if (getVelocityX() ==0) setVelocityX(getVelocityX() + asteroide.getVelocityX()/2);
+        if (asteroide.getVelocityX() ==0) asteroide.setVelocityX(asteroide.getVelocityX() + getVelocityX()/2);
+        setVelocityX(- getVelocityX());
+        asteroide.setVelocityX(-asteroide.getVelocityX());
+
+        if (getVelocityY() ==0) setVelocityY(getVelocityY() + asteroide.getVelocityY()/2);
+        if (asteroide.getVelocityY() ==0) asteroide.setVelocityY(asteroide.getVelocityY() + getVelocityY()/2);
+        setVelocityY(- getVelocityY());
+        asteroide.setVelocityY(- asteroide.getVelocityY());
     }
 
 
@@ -94,5 +100,10 @@ public class Asteroide extends GameObject {
     @Override
     public void setVelocityY(float velocityY) { super.setVelocityY(velocityY); }
 
+    @Override
+    public Sprite getSpr() { return spr; }
+
+    @Override
+    public void setSpr(Sprite spr) { this.spr = spr; }
 
 }
