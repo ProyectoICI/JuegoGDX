@@ -85,9 +85,9 @@ public class Nave extends GameObject {
         }
     }
 
-    // TODO: Utilizar una especie de deltaTime para actualizar la posicion de la nave
     public void draw(SpriteBatch batch) { spr.draw(batch); }
 
+    // TODO: Implementar la interfaz
     public boolean checkCollision(Asteroide asteroide) {
         if(!herido && asteroide.getArea().overlaps(spr.getBoundingRectangle())){
         	// rebote

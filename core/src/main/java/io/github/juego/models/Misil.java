@@ -21,7 +21,6 @@ public class Misil extends GameObject {
         this.ySpeed = ySpeed;
     }
 
-    // TODO: Utilizar una especie de deltaTime para la actualización de posición.
     public void update(float delta) {
         spr.setPosition(spr.getX()+xSpeed * delta, spr.getY()+ySpeed * delta);
         if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth()) {
@@ -33,6 +32,7 @@ public class Misil extends GameObject {
 
     }
 
+    // TODO: Implementar la interfaz
     public boolean checkCollision(Asteroide b2) {
         if(spr.getBoundingRectangle().overlaps(b2.getArea())){
             // Se destruyen ambos

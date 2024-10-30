@@ -34,7 +34,6 @@ public class Asteroide extends GameObject implements Colisionable {
         this.setVelocityY(ySpeed);
     }
 
-    // TODO: Utilizar una especie de deltaTime para la actualización de posición
     @Override
     public void update(float delta) {
         x += (getVelocityX() * delta);
@@ -47,8 +46,6 @@ public class Asteroide extends GameObject implements Colisionable {
         spr.setPosition(x, y);
     }
 
-
-    // TODO: Posiblemente tambien se deba de usar deltaTime para el checkeo de rebotes
     @Override
     public void checkCollision(GameObject asteroide) {
         if(spr.getBoundingRectangle().overlaps(asteroide.getSpr().getBoundingRectangle())){

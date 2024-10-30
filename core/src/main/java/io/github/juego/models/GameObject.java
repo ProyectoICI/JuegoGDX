@@ -16,7 +16,6 @@ public abstract class GameObject {
         this.velocityY = ySpeed;
     }
 
-    // Metodo abstracto para la actualizacion de posicion usando deltaTime
     public abstract void update(float delta);
 
     // Getters y Setters
