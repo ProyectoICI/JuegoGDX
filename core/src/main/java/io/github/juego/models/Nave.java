@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import io.github.juego.views.PantallaJuego;
 
 
 public class Nave extends GameObject implements Colisionable{
@@ -134,9 +133,9 @@ public class Nave extends GameObject implements Colisionable{
     @Override
     public float getY() {return spr.getY();}
 
-    public float getSpiteWidth() { return spr.getWidth(); }
+    public float getSpriteWidth() { return spr.getWidth(); }
 
-    public float getSpiteHeight() { return spr.getHeight(); }
+    public float getSpriteHeight() { return spr.getHeight(); }
 
 
 }
