@@ -8,6 +8,7 @@ public abstract class GameObject {
     protected float x, y;  // Position
     protected float velocityX, velocityY;  // Velocity
     private Sprite spr;
+    private AIBehaviour aiBehaviour;
 
     // Constructor
     public GameObject(float x, float y, float xSpeed, float ySpeed) {
@@ -16,6 +17,14 @@ public abstract class GameObject {
         this.velocityX = xSpeed;
         this.velocityY = ySpeed;
     }
+
+
+    public void stateAI(GameObject player, float delta) {
+        if (aiBehaviour != null) {
+            aiBehaviour.state(this, player, delta);
+        }
+    }
+
 
     public abstract void update(float delta);
 
@@ -33,6 +42,8 @@ public abstract class GameObject {
 
     public Sprite getSpr() { return spr; }
     public void setSpr(Sprite spr) { this.spr = spr; }
+
+    public void setAIBehavior(AIBehaviour aiBehavior) { this.aiBehaviour = aiBehavior; }
 
     // Metodo abstracto para el renderizado
     public abstract void draw(SpriteBatch batch);

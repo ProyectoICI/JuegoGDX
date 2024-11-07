@@ -55,7 +55,6 @@ public class PantallaJuego extends Pantalla implements Screen {
 
         nave.setVidas(game.getVidasDefault());
 
-        // Se crean los asteroides
         crearAsteroidesRandom();
     }
 
@@ -75,7 +74,6 @@ public class PantallaJuego extends Pantalla implements Screen {
 
         nave.setVidas(vidas);
 
-        //crear asteroides
         crearAsteroides();
 
 	}
@@ -185,6 +183,7 @@ public class PantallaJuego extends Pantalla implements Screen {
         if (nave.estaDestruido()) {
             naveDestruida();
         }
+
         batch.end();
 
         // Nivel completado!
@@ -199,6 +198,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 
     }
 
+    // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
     @Override
     protected void setupUI(float delta) {
         CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
@@ -348,15 +348,6 @@ public class PantallaJuego extends Pantalla implements Screen {
             txBala);
         this.agregarBala(bala);
         soundBala.play();
-    }
-
-    // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
-    private void dibujaEncabezado() {
-
-    }
-
-    private void dibujarFondo(SpriteBatch batch) {
-
     }
 
 
