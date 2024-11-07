@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.juego.models.GameSettings;
 import io.github.juego.views.PantallaMenu;
 
 
@@ -12,13 +13,6 @@ public class SpaceNavigation extends Game {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private int highScore;
-
-    // Variables por defecto para el juego
-    private int vidasDefault = 3;
-    private int rondaDefault = 1;
-    private int velXAsteroidesDefault = 6;
-    private int velYAsteroidesDefault = 6;
-    private int cantAsteroidesDefault = 10;
 
 	public void create() {
 		highScore = 0;
@@ -56,24 +50,24 @@ public class SpaceNavigation extends Game {
 
 
     // Setters y Getters para las variables por defecto
-    public int getVidasDefault() { return vidasDefault; }
+    public int getVidasDefault() { return GameSettings.getInstance().getVidasDefault(); }
 
-    public void setVidasDefault(int vidasDefault) { this.vidasDefault = vidasDefault; }
+    public void setVidasDefault(int vidasDefault) { GameSettings.getInstance().setVidasDefault(vidasDefault); }
 
-    public int getRondaDefault() { return rondaDefault; }
+    public int getRondaDefault() { return GameSettings.getInstance().getRondaDefault(); }
 
-    public void setRondaDefault(int rondaDefault) { this.rondaDefault = rondaDefault; }
+    public void setRondaDefault(int rondaDefault) { GameSettings.getInstance().setRondaDefault(rondaDefault); }
 
-    public int getVelXAsteroidesDefault() { return velXAsteroidesDefault; }
+    public int getVelXAsteroidesDefault() { return GameSettings.getInstance().getVelXAsteroidesDefault(); }
 
-    public void setVelXAsteroidesDefault(int velXAsteroidesDefault) { this.velXAsteroidesDefault = velXAsteroidesDefault; }
+    public void setVelXAsteroidesDefault(int velXAsteroidesDefault) { GameSettings.getInstance().setVelXAsteroidesDefault(velXAsteroidesDefault); }
 
-    public int getVelYAsteroidesDefault() { return velYAsteroidesDefault; }
+    public int getVelYAsteroidesDefault() { return GameSettings.getInstance().getVelYAsteroidesDefault(); }
 
-    public void setVelYAsteroidesDefault(int velYAsteroidesDefault) { this.velYAsteroidesDefault = velYAsteroidesDefault; }
+    public void setVelYAsteroidesDefault(int velYAsteroidesDefault) { GameSettings.getInstance().setVelYAsteroidesDefault(velYAsteroidesDefault); }
 
-    public int getCantAsteroidesDefault() { return cantAsteroidesDefault; }
+    public int getCantAsteroidesDefault() { return GameSettings.getInstance().getCantAsteroidesDefault(); }
 
-    public void setCantAsteroidesDefault(int cantAsteroidesDefault) { this.cantAsteroidesDefault = cantAsteroidesDefault; }
+    public void setCantAsteroidesDefault(int cantAsteroidesDefault) { GameSettings.getInstance().setCantAsteroidesDefault(cantAsteroidesDefault); }
 
 }

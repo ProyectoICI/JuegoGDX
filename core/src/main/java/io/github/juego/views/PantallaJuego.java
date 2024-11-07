@@ -133,19 +133,6 @@ public class PantallaJuego implements Screen {
 
 	}
 
-    // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
-	private void dibujaEncabezado() {
-		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
-		game.getFont().getData().setScale(1f);
-		game.getFont().draw(batch, str, 10, 30);
-		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
-		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
-	}
-
-    private void dibujarFondo(SpriteBatch batch) {
-        batch.draw(backgroundImage, 0, 0, 1200, 800);
-    }
-
     @Override
 	public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -284,6 +271,20 @@ public class PantallaJuego implements Screen {
         this.agregarBala(bala);
         soundBala.play();
     }
+
+    // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
+    private void dibujaEncabezado() {
+        CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
+        game.getFont().getData().setScale(1f);
+        game.getFont().draw(batch, str, 10, 30);
+        game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
+        game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+    }
+
+    private void dibujarFondo(SpriteBatch batch) {
+        batch.draw(backgroundImage, 0, 0, 1200, 800);
+    }
+
 
     public void agregarBala(Misil bb) {
         balas.add(bb);
