@@ -56,7 +56,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 
         nave.setVidas(game.getVidasDefault());
 
-        crearAsteroidesRandom();
+        crearAsteroides();
     }
 
     // Constructor para cargar las pantallas de juego de rondas subsiguientes
@@ -275,35 +275,20 @@ public class PantallaJuego extends Pantalla implements Screen {
     /*            Metodos auxiliares          */
     /* -------------------------------------- */
 
-    // TODO: Randomizar mas las direcciones de los asteroides, ya que suelen solamente ir arriba a la derecha
-    private void crearAsteroidesRandom() {
-        Random r = new Random();
-        for (int i = 0; i < cantAsteroides; i++) {
-            Asteroide ast = new Asteroide(
-                1+r.nextInt((int)Gdx.graphics.getWidth()),
-                50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-                20+r.nextInt(10),
-                velXAsteroides+r.nextFloat(4),
-                velYAsteroides+r.nextFloat(4),
-                new Texture(Gdx.files.internal("aGreyMedium4.png")));
-            ast.setAIBehavior(new RoamArea());
-            asteroides1.add(ast);
-            asteroides2.add(ast);
-        }
-    }
-
-    // TODO: Randomizar mas las direcciones de los asteroides, ya que suelen solamente ir arriba a la derecha
     private void crearAsteroides() {
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
-            Asteroide asteroideNuevo = new Asteroide(
-                r.nextInt((int)Gdx.graphics.getWidth()),
-                50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-                20+r.nextInt(10),
-                velXAsteroides+r.nextFloat(4),
-                velYAsteroides+r.nextFloat(4),
-                new Texture(Gdx.files.internal("aGreyMedium4.png")));
+            float x = r.nextInt(Gdx.graphics.getWidth());
+            float y = 50 + r.nextInt(Gdx.graphics.getHeight() - 50);
+            int size = 20 + r.nextInt(10);
+
+            // Randomize the direction of the velocities
+            float xSpeed = (r.nextFloat() * 2 - 1) * velXAsteroides;
+            float ySpeed = (r.nextFloat() * 2 - 1) * velYAsteroides;
+
+            Asteroide asteroideNuevo = new Asteroide(x, y, size, xSpeed, ySpeed, new Texture(Gdx.files.internal("aGreyMedium4.png")));
             asteroideNuevo.setAIBehavior(new RoamArea());
+
             asteroides1.add(asteroideNuevo);
             asteroides2.add(asteroideNuevo);
         }
