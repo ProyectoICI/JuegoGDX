@@ -14,7 +14,7 @@ public class GameSettings {
         this.rondaDefault = 1;
         this.velXAsteroidesDefault = 6;
         this.velYAsteroidesDefault = 6;
-        this.cantAsteroidesDefault = 1;
+        this.cantAsteroidesDefault = 10;
     }
 
     public static GameSettings getInstance() {

@@ -14,13 +14,10 @@ public class RoamArea implements AIBehaviour {
         object.setX((object.getVelocityX() * delta) + object.getX());
         object.setY((object.getVelocityY() * delta) + object.getY());
 
-
-
         if (object.getX()+object.getVelocityX() < 0 || object.getX()+object.getVelocityX()+object.getSpr().getWidth() > Gdx.graphics.getWidth())
             object.setVelocityX(object.getVelocityX() * -1);
         if (object.getY()+object.getVelocityY() < 0 || object.getY()+object.getVelocityY()+object.getSpr().getHeight() > Gdx.graphics.getHeight())
             object.setVelocityY(object.getVelocityY() * -1);
-
 
         object.getSpr().setPosition(object.getX(), object.getY());
     }

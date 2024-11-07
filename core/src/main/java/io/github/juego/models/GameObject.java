@@ -47,6 +47,7 @@ public abstract class GameObject {
     public void setSpr(Sprite spr) { this.spr = spr; }
 
     public void setAIBehavior(AIBehaviour aiBehavior) { this.aiBehaviour = aiBehavior; }
+    public AIBehaviour getAIBehavior() { return aiBehaviour; }
 
     // Metodo abstracto para el renderizado
     public abstract void draw(SpriteBatch batch);

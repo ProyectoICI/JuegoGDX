@@ -79,29 +79,19 @@ public class Asteroide extends GameObject implements Colisionable {
     public void setY(float y) { super.setY(y); }
 
     @Override
-    public Rectangle getArea() {
-        return spr.getBoundingRectangle();
-    }
+    public Rectangle getArea() { return spr.getBoundingRectangle(); }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        spr.draw(batch);
-    }
+    public void draw(SpriteBatch batch) { spr.draw(batch); }
 
     @Override
-    public float getVelocityX() {
-        return super.getVelocityX();
-    }
+    public float getVelocityX() { return super.getVelocityX(); }
 
     @Override
-    public void setVelocityX(float velocityX) {
-        super.setVelocityX(velocityX);
-    }
+    public void setVelocityX(float velocityX) { super.setVelocityX(velocityX); }
 
     @Override
-    public float getVelocityY() {
-        return super.getVelocityY();
-    }
+    public float getVelocityY() { return super.getVelocityY(); }
 
     @Override
     public void setVelocityY(float velocityY) { super.setVelocityY(velocityY); }
@@ -113,6 +103,9 @@ public class Asteroide extends GameObject implements Colisionable {
     public void setSpr(Sprite spr) { super.setSpr(spr); }
 
     @Override
-    public void setAIBehavior(AIBehaviour aiBehavior) { super.setAIBehavior(aiBehavior); }
+    public void setAIBehavior(AIBehaviour aiBehavior) { this.aiBehaviour = aiBehavior; }
+
+    @Override
+    public AIBehaviour getAIBehavior() { return aiBehaviour; }
 
 }

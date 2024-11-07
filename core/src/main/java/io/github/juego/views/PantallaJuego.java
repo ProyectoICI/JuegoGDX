@@ -275,6 +275,7 @@ public class PantallaJuego extends Pantalla implements Screen {
     /*            Metodos auxiliares          */
     /* -------------------------------------- */
 
+    // TODO: Randomizar mas las direcciones de los asteroides, ya que suelen solamente ir arriba a la derecha
     private void crearAsteroidesRandom() {
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
@@ -291,6 +292,7 @@ public class PantallaJuego extends Pantalla implements Screen {
         }
     }
 
+    // TODO: Randomizar mas las direcciones de los asteroides, ya que suelen solamente ir arriba a la derecha
     private void crearAsteroides() {
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
