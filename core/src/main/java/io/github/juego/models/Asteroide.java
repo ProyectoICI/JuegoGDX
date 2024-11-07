@@ -8,11 +8,13 @@ import com.badlogic.gdx.math.Rectangle;
 
 
 public class Asteroide extends GameObject implements Colisionable {
-	private float x;
+
+    private float x;
     private float y;
     private float xSpeed;
     private float ySpeed;
     private Sprite spr;
+    private AIBehaviour aiBehaviour;
 
     public Asteroide(float x, float y, int size, float xSpeed, float ySpeed, Texture tx) {
         super(x, y, xSpeed, ySpeed);
@@ -36,14 +38,9 @@ public class Asteroide extends GameObject implements Colisionable {
 
     @Override
     public void update(float delta) {
-        x += (getVelocityX() * delta);
-        y += (getVelocityY() * delta);
-
-        if (x+getVelocityX() < 0 || x+getVelocityX()+spr.getWidth() > Gdx.graphics.getWidth())
-        	setVelocityX(getVelocityX() * -1);
-        if (y+getVelocityY() < 0 || y+getVelocityY()+spr.getHeight() > Gdx.graphics.getHeight())
-        	setVelocityY(getVelocityY() * -1);
-        spr.setPosition(x, y);
+        if (aiBehaviour != null) {
+            aiBehaviour.state(this, null, delta);
+        }
     }
 
     @Override
@@ -69,7 +66,19 @@ public class Asteroide extends GameObject implements Colisionable {
         asteroide.setVelocityY(- asteroide.getVelocityY());
     }
 
+    @Override
+    public float getX() { return super.getX(); }
 
+    @Override
+    public float getY() { return super.getY(); }
+
+    @Override
+    public void setX(float x) { super.setX(x); }
+
+    @Override
+    public void setY(float y) { super.setY(y); }
+
+    @Override
     public Rectangle getArea() {
         return spr.getBoundingRectangle();
     }
@@ -78,8 +87,6 @@ public class Asteroide extends GameObject implements Colisionable {
     public void draw(SpriteBatch batch) {
         spr.draw(batch);
     }
-
-
 
     @Override
     public float getVelocityX() {
@@ -103,6 +110,9 @@ public class Asteroide extends GameObject implements Colisionable {
     public Sprite getSpr() { return spr; }
 
     @Override
-    public void setSpr(Sprite spr) { this.spr = spr; }
+    public void setSpr(Sprite spr) { super.setSpr(spr); }
+
+    @Override
+    public void setAIBehavior(AIBehaviour aiBehavior) { super.setAIBehavior(aiBehavior); }
 
 }

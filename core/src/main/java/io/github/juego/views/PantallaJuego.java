@@ -17,6 +17,7 @@ import io.github.juego.models.Asteroide;
 import io.github.juego.models.Misil;
 import io.github.juego.models.Nave;
 import io.github.juego.models.Pantalla;
+import io.github.juego.strategies.ai.RoamArea;
 
 
 public class PantallaJuego extends Pantalla implements Screen {
@@ -277,15 +278,16 @@ public class PantallaJuego extends Pantalla implements Screen {
     private void crearAsteroidesRandom() {
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
-            Asteroide bb = new Asteroide(
+            Asteroide ast = new Asteroide(
                 1+r.nextInt((int)Gdx.graphics.getWidth()),
                 50+r.nextInt((int)Gdx.graphics.getHeight()-50),
                 20+r.nextInt(10),
                 velXAsteroides+r.nextFloat(4),
                 velYAsteroides+r.nextFloat(4),
                 new Texture(Gdx.files.internal("aGreyMedium4.png")));
-            asteroides1.add(bb);
-            asteroides2.add(bb);
+            ast.setAIBehavior(new RoamArea());
+            asteroides1.add(ast);
+            asteroides2.add(ast);
         }
     }
 
@@ -299,6 +301,7 @@ public class PantallaJuego extends Pantalla implements Screen {
                 velXAsteroides+r.nextFloat(4),
                 velYAsteroides+r.nextFloat(4),
                 new Texture(Gdx.files.internal("aGreyMedium4.png")));
+            asteroideNuevo.setAIBehavior(new RoamArea());
             asteroides1.add(asteroideNuevo);
             asteroides2.add(asteroideNuevo);
         }

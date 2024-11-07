@@ -19,9 +19,9 @@ public abstract class GameObject {
     }
 
 
-    public void stateAI(GameObject player, float delta) {
+    public void stateAI(GameObject object, float delta) {
         if (aiBehaviour != null) {
-            aiBehaviour.state(this, player, delta);
+            aiBehaviour.state(this, object, delta);
         }
     }
 
@@ -31,6 +31,9 @@ public abstract class GameObject {
     // Getters y Setters
     public float getX() { return x; }
     public float getY() { return y; }
+
+    public void setX(float x) { this.x = x; }
+    public void setY(float y) { this.y = y; }
 
     public float getVelocityX() { return velocityX; }
     public float getVelocityY() { return velocityY; }
