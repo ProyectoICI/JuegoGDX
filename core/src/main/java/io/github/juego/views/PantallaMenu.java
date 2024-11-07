@@ -6,15 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
+import io.github.juego.models.Pantalla;
 
 
-public class PantallaMenu implements Screen {
+public class PantallaMenu extends Pantalla implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
 
 	public PantallaMenu(SpaceNavigation game) {
-		this.game = game;
+        super(game);
+        this.game = game;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
@@ -41,8 +43,56 @@ public class PantallaMenu implements Screen {
 		}
 	}
 
+    /* -------------------------------------- */
+    /*      Metodos de renderizado Custom     */
+    /* -------------------------------------- */
 
-	@Override
+    @Override
+    protected void initialize() {
+
+    }
+
+    @Override
+    protected void loadAssets() {
+
+    }
+
+    @Override
+    protected void gameLogic(float delta) {
+
+    }
+
+    @Override
+    protected void setupUI(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer1(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer2(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer3(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer4(float delta) {
+
+    }
+
+    /* -------------------------------------- */
+    /*      Metodos de renderizado LibGDX     */
+    /* -------------------------------------- */
+
+
+    @Override
 	public void show() {
 		// TODO Auto-generated method stub
 

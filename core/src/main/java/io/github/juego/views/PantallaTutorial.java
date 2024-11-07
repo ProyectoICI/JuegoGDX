@@ -5,11 +5,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
+import io.github.juego.models.Pantalla;
 
-public class PantallaTutorial implements Screen {
+public class PantallaTutorial extends Pantalla implements Screen {
     private SpaceNavigation game;
     private OrthographicCamera camera;
     private Texture tutorialImage;
+
+    public PantallaTutorial(SpaceNavigation game) {
+        super(game);
+    }
 
     @Override
     public void render(float delta) {
@@ -17,6 +22,54 @@ public class PantallaTutorial implements Screen {
         camera.update();
 
     }
+
+    /* -------------------------------------- */
+    /*      Metodos de renderizado Custom     */
+    /* -------------------------------------- */
+
+    @Override
+    protected void initialize() {
+
+    }
+
+    @Override
+    protected void loadAssets() {
+
+    }
+
+    @Override
+    protected void gameLogic(float delta) {
+
+    }
+
+    @Override
+    protected void setupUI(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer1(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer2(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer3(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer4(float delta) {
+
+    }
+
+    /* -------------------------------------- */
+    /*      Metodos de renderizado LibGDX     */
+    /* -------------------------------------- */
 
     @Override
     public void resize(int i, int i1) {

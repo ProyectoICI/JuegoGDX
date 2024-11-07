@@ -16,9 +16,10 @@ import io.github.juego.SpaceNavigation;
 import io.github.juego.models.Asteroide;
 import io.github.juego.models.Misil;
 import io.github.juego.models.Nave;
+import io.github.juego.models.Pantalla;
 
 
-public class PantallaJuego implements Screen {
+public class PantallaJuego extends Pantalla implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
@@ -41,6 +42,7 @@ public class PantallaJuego implements Screen {
 
     // Constructor que utiliza variables predefinidas para inicializar el juego al inicio
     public PantallaJuego(SpaceNavigation game) {
+        super(game);
         this.game = game;
         this.ronda = game.getRondaDefault();
         this.velXAsteroides = game.getVelXAsteroidesDefault();
@@ -48,11 +50,66 @@ public class PantallaJuego implements Screen {
         this.cantAsteroides = game.getCantAsteroidesDefault();
         this.score = 0;
 
+        loadAssets();
+        initialize();
+
+        nave.setVidas(game.getVidasDefault());
+
+        // Se crean los asteroides
+        crearAsteroidesRandom();
+    }
+
+    // Constructor para cargar las pantallas de juego de rondas subsiguientes
+	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
+			float velXAsteroides, float velYAsteroides, int cantAsteroides) {
+        super(game);
+        this.game = game;
+		this.ronda = ronda;
+		this.score = score;
+		this.velXAsteroides = velXAsteroides;
+		this.velYAsteroides = velYAsteroides;
+		this.cantAsteroides = cantAsteroides;
+
+        loadAssets();
+        initialize();
+
+        nave.setVidas(vidas);
+
+        //crear asteroides
+        crearAsteroides();
+
+	}
+
+    @Override
+	public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        showScreen(delta);
+    }
+
+    /* -------------------------------------- */
+    /*      Metodos de renderizado Custom     */
+    /* -------------------------------------- */
+
+    @Override
+    protected void initialize() {
         batch = game.getBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
 
-        //Inicialización de assets
+        // Se inicializa la nave
+        nave = new Nave(Gdx.graphics.getWidth()/2-50,
+            30,
+            0,
+            0,
+            new Texture(Gdx.files.internal("MainShip3.png")),
+            Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
+            new Texture(Gdx.files.internal("Rocket2.png")),
+            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+    }
+
+    @Override
+    protected void loadAssets() {
+
         explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
         explosionSound.setVolume(1,0.5f);
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
@@ -65,80 +122,11 @@ public class PantallaJuego implements Screen {
         txBala = new Texture(Gdx.files.internal("Rocket2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
-        // Se inicializa la nave
-        nave = new Nave(Gdx.graphics.getWidth()/2-50,
-            30,
-            0,
-            0,
-            new Texture(Gdx.files.internal("MainShip3.png")),
-            Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-            new Texture(Gdx.files.internal("Rocket2.png")),
-            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
-        nave.setVidas(game.getVidasDefault());
-
-        // Se crean los asteroides
-        Random r = new Random();
-        for (int i = 0; i < cantAsteroides; i++) {
-            Asteroide bb = new Asteroide(
-                1+r.nextInt((int)Gdx.graphics.getWidth()),
-                50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-                20+r.nextInt(10),
-                velXAsteroides+r.nextFloat(4),
-                velYAsteroides+r.nextFloat(4),
-                new Texture(Gdx.files.internal("aGreyMedium4.png")));
-            asteroides1.add(bb);
-            asteroides2.add(bb);
-        }
     }
 
-    // Constructor para cargar las pantallas de juego de rondas subsiguientes
-	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
-			float velXAsteroides, float velYAsteroides, int cantAsteroides) {
-		this.game = game;
-		this.ronda = ronda;
-		this.score = score;
-		this.velXAsteroides = velXAsteroides;
-		this.velYAsteroides = velYAsteroides;
-		this.cantAsteroides = cantAsteroides;
-
-		batch = game.getBatch();
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 640);
-		//inicializar assets; musica de fondo y efectos de sonido
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-		explosionSound.setVolume(1,0.1f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
-
-		gameMusic.setLooping(true);
-		gameMusic.setVolume(0.5f);
-		gameMusic.play();
-
-        soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-        txBala = new Texture(Gdx.files.internal("Rocket2.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background.png"));
-
-	    // cargar imagen de la nave, 64x64
-	    nave = new Nave(Gdx.graphics.getWidth()/2-50,
-                        30,
-                        0,
-                        0,
-                        new Texture(Gdx.files.internal("MainShip3.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-	    				new Texture(Gdx.files.internal("Rocket2.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
-        nave.setVidas(vidas);
-
-        //crear asteroides
-        crearAsteroides();
-
-	}
-
     @Override
-	public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        dibujarFondo(batch);
-        dibujaEncabezado();
+    protected void gameLogic(float delta) {
+
         if (!nave.estaHerido()) {
 
             // Colisiones entre balas y su destrucción
@@ -211,6 +199,96 @@ public class PantallaJuego implements Screen {
 
     }
 
+    @Override
+    protected void setupUI(float delta) {
+        CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
+        game.getFont().getData().setScale(1f);
+        game.getFont().draw(batch, str, 10, 30);
+        game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
+        game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+    }
+
+    @Override
+    protected void renderLayer1(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer2(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer3(float delta) {
+
+    }
+
+    @Override
+    protected void renderLayer4(float delta) {
+        batch.begin();
+        batch.draw(backgroundImage, 0, 0, 1200, 800);
+    }
+
+    /* -------------------------------------- */
+    /*      Metodos de renderizado LibGDX     */
+    /* -------------------------------------- */
+
+    @Override
+	public void show() {
+		// TODO Auto-generated method stub
+		gameMusic.play();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		this.explosionSound.dispose();
+		this.gameMusic.dispose();
+	}
+
+    /* -------------------------------------- */
+    /*            Metodos auxiliares          */
+    /* -------------------------------------- */
+
+    private void crearAsteroidesRandom() {
+        Random r = new Random();
+        for (int i = 0; i < cantAsteroides; i++) {
+            Asteroide bb = new Asteroide(
+                1+r.nextInt((int)Gdx.graphics.getWidth()),
+                50+r.nextInt((int)Gdx.graphics.getHeight()-50),
+                20+r.nextInt(10),
+                velXAsteroides+r.nextFloat(4),
+                velYAsteroides+r.nextFloat(4),
+                new Texture(Gdx.files.internal("aGreyMedium4.png")));
+            asteroides1.add(bb);
+            asteroides2.add(bb);
+        }
+    }
+
     private void crearAsteroides() {
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
@@ -274,57 +352,16 @@ public class PantallaJuego implements Screen {
 
     // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
     private void dibujaEncabezado() {
-        CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
-        game.getFont().getData().setScale(1f);
-        game.getFont().draw(batch, str, 10, 30);
-        game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
-        game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+
     }
 
     private void dibujarFondo(SpriteBatch batch) {
-        batch.draw(backgroundImage, 0, 0, 1200, 800);
+
     }
 
 
     public void agregarBala(Misil bb) {
         balas.add(bb);
     }
-
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		gameMusic.play();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		this.explosionSound.dispose();
-		this.gameMusic.dispose();
-	}
 
 }
