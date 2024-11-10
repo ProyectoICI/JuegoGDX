@@ -4,21 +4,63 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.juego.Interfaces.Colisionable;
+import io.github.juego.Interfaces.ObjetosBuilder;
+import io.github.juego.Superclasses.GameObject;
 
 
-public class Misil extends GameObject implements Colisionable{
+public class Misil extends GameObject implements Colisionable {
 
 	private float xSpeed;
 	private float ySpeed;
 	private boolean destroyed = false;
 	private Sprite spr;
 
-    public Misil(float x, float y, float xSpeed, float ySpeed, Texture tx) {
-        super(x, y, xSpeed, ySpeed);
-        spr = new Sprite(tx);
-        spr.setPosition(x, y);
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
+    public static class BuilderMisil implements ObjetosBuilder<Misil> {
+
+        private float x;
+        private float y;
+        private float xSpeed;
+        private float ySpeed;
+        private Sprite spr;
+
+        public BuilderMisil x(float x) {
+            this.x = x;
+            return this;
+        }
+
+        public BuilderMisil y(float y) {
+            this.y = y;
+            return this;
+        }
+
+        public BuilderMisil xSpeed(float xSpeed) {
+            this.xSpeed = xSpeed;
+            return this;
+        }
+
+        public BuilderMisil ySpeed(float ySpeed) {
+            this.ySpeed = ySpeed;
+            return this;
+        }
+
+        public BuilderMisil sprite(Texture tx) {
+            this.spr = new Sprite(tx);
+            return this;
+        }
+
+        @Override
+        public Misil build() {
+            return new Misil(this);
+        }
+    }
+
+    public Misil(BuilderMisil builder) {
+        super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
+        this.xSpeed = builder.xSpeed;
+        this.ySpeed = builder.ySpeed;
+        this.spr = new Sprite(builder.spr);
+        this.spr.setPosition(builder.x, builder.y);
     }
 
     public void update(float delta) {

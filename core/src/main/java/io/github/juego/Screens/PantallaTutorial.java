@@ -1,11 +1,11 @@
-package io.github.juego.views;
+package io.github.juego.Screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
-import io.github.juego.models.Pantalla;
+import io.github.juego.Superclasses.Pantalla;
 
 public class PantallaTutorial extends Pantalla implements Screen {
     private SpaceNavigation game;

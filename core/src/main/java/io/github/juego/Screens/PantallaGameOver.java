@@ -1,4 +1,4 @@
-package io.github.juego.views;
+package io.github.juego.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,41 +6,25 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
-import io.github.juego.models.Pantalla;
+import io.github.juego.Superclasses.Pantalla;
 
 
-public class PantallaMenu extends Pantalla implements Screen {
+public class PantallaGameOver extends Pantalla implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
 
-	public PantallaMenu(SpaceNavigation game) {
+	public PantallaGameOver(SpaceNavigation game) {
         super(game);
-        this.game = game;
+		this.game = game;
 
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1200, 800);
+        initialize();
+
 	}
 
 	@Override
 	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
-
-		camera.update();
-		game.getBatch().setProjectionMatrix(camera.combined);
-
-		game.getBatch().begin();
-		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
-		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
-
-		game.getBatch().end();
-
-		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-			Screen ss = new PantallaJuego(game);
-			ss.resize(1200, 800);
-			game.setScreen(ss);
-			dispose();
-		}
+        showScreen(delta);
 	}
 
     /* -------------------------------------- */
@@ -49,6 +33,8 @@ public class PantallaMenu extends Pantalla implements Screen {
 
     @Override
     protected void initialize() {
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 1200, 800);
 
     }
 
@@ -59,12 +45,26 @@ public class PantallaMenu extends Pantalla implements Screen {
 
     @Override
     protected void gameLogic(float delta) {
-
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            Screen ss = crearPantallaJuego();
+            game.setScreen(ss);
+            dispose();
+        }
     }
 
     @Override
     protected void setupUI(float delta) {
 
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+
+        camera.update();
+        game.getBatch().setProjectionMatrix(camera.combined);
+
+        game.getBatch().begin();
+        game.getFont().draw(game.getBatch(), "Game Over !!! ", 120, 400,400,1,true);
+        game.getFont().draw(game.getBatch(), "Pincha en cualquier lado para reiniciar ...", 100, 300);
+
+        game.getBatch().end();
     }
 
     @Override
@@ -127,5 +127,21 @@ public class PantallaMenu extends Pantalla implements Screen {
 		// TODO Auto-generated method stub
 
 	}
+
+    /* -------------------------------------- */
+    /*            Metodos auxiliares          */
+    /* -------------------------------------- */
+
+    private Screen crearPantallaJuego() {
+        Screen ss = new PantallaJuego(game,
+            game.getRondaDefault(),
+            game.getVidasDefault(),
+            0,
+            game.getVelXAsteroidesDefault(),
+            game.getVelYAsteroidesDefault(),
+            game.getCantAsteroidesDefault());
+        ss.resize(1200, 800);
+        return ss;
+    }
 
 }

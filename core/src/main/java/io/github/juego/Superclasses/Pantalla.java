@@ -1,4 +1,4 @@
-package io.github.juego.models;
+package io.github.juego.Superclasses;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import io.github.juego.SpaceNavigation;

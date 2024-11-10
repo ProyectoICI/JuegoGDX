@@ -1,8 +1,8 @@
 package io.github.juego.strategies.ai;
 
 import com.badlogic.gdx.Gdx;
-import io.github.juego.models.AIBehaviour;
-import io.github.juego.models.GameObject;
+import io.github.juego.Interfaces.AIBehaviour;
+import io.github.juego.Superclasses.GameObject;
 
 /**
  * Esta estrategia es la común, los asteroides simplemente vagan en el espacio con velocidades especificas ya dadas

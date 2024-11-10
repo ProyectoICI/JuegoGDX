@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.juego.models.GameSettings;
-import io.github.juego.views.PantallaMenu;
+import io.github.juego.Screens.PantallaMenu;
 
 
 public class SpaceNavigation extends Game {

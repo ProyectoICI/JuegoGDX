@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import io.github.juego.Interfaces.AIBehaviour;
+import io.github.juego.Interfaces.Colisionable;
+import io.github.juego.Interfaces.ObjetosBuilder;
+import io.github.juego.Superclasses.GameObject;
 
 
 public class Asteroide extends GameObject implements Colisionable {
@@ -16,24 +20,70 @@ public class Asteroide extends GameObject implements Colisionable {
     private Sprite spr;
     private AIBehaviour aiBehaviour;
 
-    public Asteroide(float x, float y, int size, float xSpeed, float ySpeed, Texture tx) {
-        super(x, y, xSpeed, ySpeed);
+    public static class BuilderAsteroide implements ObjetosBuilder<Asteroide> {
+        private float x;
+        private float y;
+        private float xSpeed;
+        private float ySpeed;
+        private float size;
+        private Sprite spr;
+        private AIBehaviour aiBehaviour;
 
-        spr = new Sprite(tx);
-        this.x = x;
+        public BuilderAsteroide x(float x) {
+            this.x = x;
+            return this;
+        }
 
-        //validar que borde de esfera no quede fuera
-        if (x-size < 0) this.x = x+size;
-        if (x+size > Gdx.graphics.getWidth())this.x = x-size;
+        public BuilderAsteroide y(float y) {
+            this.y = y;
+            return this;
+        }
 
-        this.y = y;
-        //validar que borde de esfera no quede fuera
-        if (y-size < 0) this.y = y+size;
-        if (y+size > Gdx.graphics.getHeight())this.y = y-size;
+        public BuilderAsteroide size(float size) {
+            this.size = size;
+            return this;
+        }
 
-        spr.setPosition(x, y);
-        this.setVelocityX(xSpeed);
-        this.setVelocityY(ySpeed);
+        public BuilderAsteroide xSpeed(float xSpeed) {
+            this.xSpeed = xSpeed;
+            return this;
+        }
+
+        public BuilderAsteroide ySpeed(float ySpeed) {
+            this.ySpeed = ySpeed;
+            return this;
+        }
+
+        public BuilderAsteroide sprite(Texture tx) {
+            this.spr = new Sprite(tx);
+            return this;
+        }
+
+        @Override
+        public Asteroide build() {
+            return new Asteroide(this);
+        }
+    }
+
+    public Asteroide(BuilderAsteroide builder) {
+        super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
+
+        this.x = builder.x;
+        this.y = builder.y;
+        this.xSpeed = builder.xSpeed;
+        this.ySpeed = builder.ySpeed;
+        this.spr = new Sprite(builder.spr);
+        this.aiBehaviour = builder.aiBehaviour;
+
+        // Validate that the edge of the sphere does not go out of bounds
+        if (x - builder.size < 0) this.x = x + builder.size;
+        if (x + builder.size > Gdx.graphics.getWidth()) this.x = x - builder.size;
+        if (y - builder.size < 0) this.y = y + builder.size;
+        if (y + builder.size > Gdx.graphics.getHeight()) this.y = y - builder.size;
+
+        spr.setPosition(this.x, this.y);
+        this.setVelocityX(this.xSpeed);
+        this.setVelocityY(this.ySpeed);
     }
 
     @Override

@@ -1,4 +1,6 @@
-package io.github.juego.models;
+package io.github.juego.Interfaces;
+
+import io.github.juego.Superclasses.GameObject;
 
 public interface AIBehaviour {
     /**

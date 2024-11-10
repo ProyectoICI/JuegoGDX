@@ -1,8 +1,9 @@
-package io.github.juego.models;
+package io.github.juego.Superclasses;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import io.github.juego.Interfaces.AIBehaviour;
 
 public abstract class GameObject {
     protected float x, y;  // Position

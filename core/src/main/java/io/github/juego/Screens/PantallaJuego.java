@@ -1,4 +1,4 @@
-package io.github.juego.views;
+package io.github.juego.Screens;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +16,7 @@ import io.github.juego.SpaceNavigation;
 import io.github.juego.models.Asteroide;
 import io.github.juego.models.Misil;
 import io.github.juego.models.Nave;
-import io.github.juego.models.Pantalla;
+import io.github.juego.Superclasses.Pantalla;
 import io.github.juego.strategies.ai.RoamArea;
 
 
@@ -41,25 +41,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 	private ArrayList<Asteroide> asteroides2 = new ArrayList<>();
 	private ArrayList<Misil> balas = new ArrayList<>();
 
-    // Constructor que utiliza variables predefinidas para inicializar el juego al inicio
-    public PantallaJuego(SpaceNavigation game) {
-        super(game);
-        this.game = game;
-        this.ronda = game.getRondaDefault();
-        this.velXAsteroides = game.getVelXAsteroidesDefault();
-        this.velYAsteroides = game.getVelYAsteroidesDefault();
-        this.cantAsteroides = game.getCantAsteroidesDefault();
-        this.score = 0;
-
-        loadAssets();
-        initialize();
-
-        nave.setVidas(game.getVidasDefault());
-
-        crearAsteroides();
-    }
-
-    // Constructor para cargar las pantallas de juego de rondas subsiguientes
+    // Constructor
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
 			float velXAsteroides, float velYAsteroides, int cantAsteroides) {
         super(game);
@@ -94,16 +76,27 @@ public class PantallaJuego extends Pantalla implements Screen {
         batch = game.getBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
+        Nave.BuilderNave builder = new Nave.BuilderNave();
 
         // Se inicializa la nave
-        nave = new Nave(Gdx.graphics.getWidth()/2-50,
+        /*nave = new Nave(Gdx.graphics.getWidth()/2-50,
             30,
             0,
             0,
             new Texture(Gdx.files.internal("MainShip3.png")),
             Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
             new Texture(Gdx.files.internal("Rocket2.png")),
-            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));*/
+        nave = builder
+            .x(Gdx.graphics.getWidth()/2-50)
+            .y(30)
+            .xVel(0)
+            .yVel(0)
+            .texture(new Texture(Gdx.files.internal("MainShip3.png")))
+            .sonidoHerido(Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")))
+            .txBala(new Texture(Gdx.files.internal("Rocket2.png")))
+            .soundBala(Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")))
+            .build();
     }
 
     @Override
@@ -277,6 +270,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 
     private void crearAsteroides() {
         Random r = new Random();
+        Asteroide.BuilderAsteroide builder = new Asteroide.BuilderAsteroide();
         for (int i = 0; i < cantAsteroides; i++) {
             float x = r.nextInt(Gdx.graphics.getWidth());
             float y = 50 + r.nextInt(Gdx.graphics.getHeight() - 50);
@@ -286,7 +280,14 @@ public class PantallaJuego extends Pantalla implements Screen {
             float xSpeed = (r.nextFloat() * 2 - 1) * velXAsteroides;
             float ySpeed = (r.nextFloat() * 2 - 1) * velYAsteroides;
 
-            Asteroide asteroideNuevo = new Asteroide(x, y, size, xSpeed, ySpeed, new Texture(Gdx.files.internal("aGreyMedium4.png")));
+            Asteroide asteroideNuevo = builder
+                .x(x)
+                .y(y)
+                .size(size)
+                .xSpeed(xSpeed)
+                .ySpeed(ySpeed)
+                .sprite(new Texture(Gdx.files.internal("aGreyMedium4.png")))
+                .build();
             asteroideNuevo.setAIBehavior(new RoamArea());
 
             asteroides1.add(asteroideNuevo);
@@ -322,8 +323,13 @@ public class PantallaJuego extends Pantalla implements Screen {
         float multVelocidad = 1.5F;
         int asteroidesAgregados = 10;
 
-        Screen ss = new PantallaJuego(game,ronda+1, nave.getVidas(), score,
-            multVelocidad, multVelocidad, cantAsteroides + asteroidesAgregados);
+        Screen ss = new PantallaJuego(game,
+            ronda+1,
+            nave.getVidas(),
+            score,
+            multVelocidad,
+            multVelocidad,
+            cantAsteroides + asteroidesAgregados);
         ss.resize(1200, 800);
         game.setScreen(ss);
         dispose();
@@ -331,11 +337,14 @@ public class PantallaJuego extends Pantalla implements Screen {
     }
 
     private void crearBala() {
-        Misil bala = new Misil(nave.getX() + nave.getSpriteWidth() / 2 - 5,
-            nave.getY() + nave.getSpriteHeight() - 5,
-            0,
-            300,
-            txBala);
+        Misil.BuilderMisil builder = new Misil.BuilderMisil();
+        Misil bala = builder
+            .x(nave.getX() + nave.getSpriteWidth() / 2 - 5)
+            .y(nave.getY() + nave.getSpriteHeight() - 5)
+            .xSpeed(0)
+            .ySpeed(300)
+            .sprite(txBala)
+            .build();
         this.agregarBala(bala);
         soundBala.play();
     }

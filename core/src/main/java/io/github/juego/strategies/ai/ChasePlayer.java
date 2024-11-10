@@ -1,7 +1,7 @@
 package io.github.juego.strategies.ai;
 
-import io.github.juego.models.AIBehaviour;
-import io.github.juego.models.GameObject;
+import io.github.juego.Interfaces.AIBehaviour;
+import io.github.juego.Superclasses.GameObject;
 
 /**
  * Esta estrategia es utilizada por los asteroides fugaces que aparecen contra el jugador.
