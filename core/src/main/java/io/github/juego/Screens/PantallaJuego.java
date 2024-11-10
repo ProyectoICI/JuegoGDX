@@ -116,6 +116,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 
     }
 
+    // TODO: Simplificar y modularizar la lógica del juego
     @Override
     protected void gameLogic(float delta) {
 
