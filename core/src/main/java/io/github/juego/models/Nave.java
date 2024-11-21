@@ -51,23 +51,27 @@ public class Nave extends GameObject implements Colisionable {
         private Sound soundBala;
         private Texture txBala;
 
+        @Override
         public BuilderNave x(float x) {
             this.x = x;
             return this;
         }
 
+        @Override
         public BuilderNave y(float y) {
             this.y = y;
             return this;
         }
 
-        public BuilderNave xVel(float xVel) {
-            this.xVel = xVel;
+        @Override
+        public BuilderNave xSpeed(float xSpeed) {
+            this.xVel = xSpeed;
             return this;
         }
 
-        public BuilderNave yVel(float yVel) {
-            this.yVel = yVel;
+        @Override
+        public BuilderNave ySpeed(float ySpeed) {
+            this.yVel = ySpeed;
             return this;
         }
 

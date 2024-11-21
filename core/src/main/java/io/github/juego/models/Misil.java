@@ -24,21 +24,25 @@ public class Misil extends GameObject implements Colisionable {
         private float ySpeed;
         private Sprite spr;
 
+        @Override
         public BuilderMisil x(float x) {
             this.x = x;
             return this;
         }
 
+        @Override
         public BuilderMisil y(float y) {
             this.y = y;
             return this;
         }
 
+        @Override
         public BuilderMisil xSpeed(float xSpeed) {
             this.xSpeed = xSpeed;
             return this;
         }
 
+        @Override
         public BuilderMisil ySpeed(float ySpeed) {
             this.ySpeed = ySpeed;
             return this;
@@ -75,6 +79,7 @@ public class Misil extends GameObject implements Colisionable {
     }
 
     // TODO: Implementar la interfaz
+    @Override
     public boolean checkCollision(GameObject asteroide) {
         if(spr.getBoundingRectangle().overlaps(asteroide.getArea())){
             // Se destruyen ambos
@@ -84,6 +89,7 @@ public class Misil extends GameObject implements Colisionable {
         return false;
     }
 
+    @Override
     public void onCollision(GameObject asteroide) { this.destroyed = true; }
 
     public void draw(SpriteBatch batch) {

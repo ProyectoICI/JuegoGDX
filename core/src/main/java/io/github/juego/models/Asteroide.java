@@ -29,28 +29,32 @@ public class Asteroide extends GameObject implements Colisionable {
         private Sprite spr;
         private AIBehaviour aiBehaviour;
 
+        @Override
         public BuilderAsteroide x(float x) {
             this.x = x;
             return this;
         }
 
+        @Override
         public BuilderAsteroide y(float y) {
             this.y = y;
             return this;
         }
 
-        public BuilderAsteroide size(float size) {
-            this.size = size;
-            return this;
-        }
-
+        @Override
         public BuilderAsteroide xSpeed(float xSpeed) {
             this.xSpeed = xSpeed;
             return this;
         }
 
+        @Override
         public BuilderAsteroide ySpeed(float ySpeed) {
             this.ySpeed = ySpeed;
+            return this;
+        }
+
+        public BuilderAsteroide size(float size) {
+            this.size = size;
             return this;
         }
 

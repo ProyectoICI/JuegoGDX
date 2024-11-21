@@ -79,19 +79,11 @@ public class PantallaJuego extends Pantalla implements Screen {
         Nave.BuilderNave builder = new Nave.BuilderNave();
 
         // Se inicializa la nave
-        /*nave = new Nave(Gdx.graphics.getWidth()/2-50,
-            30,
-            0,
-            0,
-            new Texture(Gdx.files.internal("MainShip3.png")),
-            Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-            new Texture(Gdx.files.internal("Rocket2.png")),
-            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));*/
         nave = builder
             .x(Gdx.graphics.getWidth()/2-50)
             .y(30)
-            .xVel(0)
-            .yVel(0)
+            .xSpeed(0)
+            .ySpeed(0)
             .texture(new Texture(Gdx.files.internal("MainShip3.png")))
             .sonidoHerido(Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")))
             .txBala(new Texture(Gdx.files.internal("Rocket2.png")))
@@ -120,92 +112,67 @@ public class PantallaJuego extends Pantalla implements Screen {
     @Override
     protected void gameLogic(float delta) {
 
-        if (!nave.estaHerido()) {
-
-            // Colisiones entre balas y su destrucción
-            for (int i = 0; i < balas.size(); i++) {
-                Misil misil = balas.get(i);
-                misil.update(delta);
-                for (int j = 0; j < asteroides1.size(); j++) {
-                    if (misil.checkCollision(asteroides1.get(j))) {
-                        explosionSound.play();
-                        asteroides1.remove(j);
-                        asteroides2.remove(j);
-                        j--;
-                        score += 10;
-                    }
-                }
-
-                //   b.draw(batch);
-                if (misil.isDestroyed()) {
-                    balas.remove(misil);
-                    i--; // Para no saltarse 1 tras eliminar en el ArrayList
-                }
-            }
-
-            // Actualizar movimiento de asteroides dentro del area
-            for (Asteroide ast : asteroides1) {
-                ast.update(delta);
-            }
-
-            // Colisiones entre asteroides y sus rebotes
-            rebotesColisionesAst();
-        }
-
-        // Dibujar las balas
-        for (Misil misil : balas) {
-            misil.draw(batch);
-        }
+        naveNotHurt(delta);
 
         nave.update(delta);
-        nave.draw(batch);
 
-        // Dibujar asteroides y manejo de colisiones
-        for (int i = 0; i < asteroides1.size(); i++) {
-            Asteroide ast = asteroides1.get(i);
-            ast.draw(batch);
-
-            // Perdió vida / Game over
-            if (nave.checkCollision(ast)) {
-
-                // Asteroide se destruye con el choque
-                asteroides1.remove(i);
-                asteroides2.remove(i);
-                i--;
-            }
-        }
+        collisionHandling();
 
         if (nave.estaDestruido()) {
             naveDestruida();
         }
 
-        batch.end();
-
-        // Nivel completado!
         if (asteroides1.isEmpty()) {
             cargarNuevaRonda();
         }
 
-        // Disparo al presionar SPACE
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             crearBala();
         }
 
     }
 
-    // TODO: Utilizar posiciones relativas a las dimensiones de la pantalla, no pixeles
     @Override
     protected void setupUI(float delta) {
-        CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
+        float width = Gdx.graphics.getWidth();
+        float height = Gdx.graphics.getHeight();
+
+        CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(1f);
-        game.getFont().draw(batch, str, 10, 30);
-        game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
-        game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
+        game.getFont().draw(
+            batch,
+            str,
+            (float) (width * 0.01),
+            (float) (height * 0.04));
+
+        game.getFont().draw(
+            batch,
+            "Score:" + this.score,
+            (float) (width * 0.18),
+            (float) (height * 0.04));
+
+        game.getFont().draw(
+            batch,
+            "HighScore:" + game.getHighScore(),
+            (float) (width * 0.9),
+            (float) (height * 0.04));
+
+        batch.end();
     }
 
     @Override
     protected void renderLayer1(float delta) {
+        // Dibujar las balas
+        for (Misil misil : balas) {
+            misil.draw(batch);
+        }
 
+        // Se dibujan los asteroides
+        for (Asteroide ast : asteroides1) {
+            ast.draw(batch);
+        }
+
+        nave.draw(batch);
     }
 
     @Override
@@ -272,12 +239,14 @@ public class PantallaJuego extends Pantalla implements Screen {
     private void crearAsteroides() {
         Random r = new Random();
         Asteroide.BuilderAsteroide builder = new Asteroide.BuilderAsteroide();
+
         for (int i = 0; i < cantAsteroides; i++) {
+
             float x = r.nextInt(Gdx.graphics.getWidth());
             float y = 50 + r.nextInt(Gdx.graphics.getHeight() - 50);
+
             int size = 20 + r.nextInt(10);
 
-            // Randomize the direction of the velocities
             float xSpeed = (r.nextFloat() * 2 - 1) * velXAsteroides;
             float ySpeed = (r.nextFloat() * 2 - 1) * velYAsteroides;
 
@@ -289,6 +258,7 @@ public class PantallaJuego extends Pantalla implements Screen {
                 .ySpeed(ySpeed)
                 .sprite(new Texture(Gdx.files.internal("aGreyMedium4.png")))
                 .build();
+
             asteroideNuevo.setAIBehavior(new RoamArea());
 
             asteroides1.add(asteroideNuevo);
@@ -306,6 +276,38 @@ public class PantallaJuego extends Pantalla implements Screen {
 
                 }
             }
+        }
+    }
+
+    private void naveNotHurt(float delta) {
+        if (!nave.estaHerido()) {
+            // Colisiones entre balas y su destrucción
+            for (int i = 0; i < balas.size(); i++) {
+                Misil misil = balas.get(i);
+                misil.update(delta);
+                for (int j = 0; j < asteroides1.size(); j++) {
+                    if (misil.checkCollision(asteroides1.get(j))) {
+                        explosionSound.play();
+                        asteroides1.remove(j);
+                        asteroides2.remove(j);
+                        j--;
+                        score += 10;
+                    }
+                }
+
+                if (misil.isDestroyed()) {
+                    balas.remove(misil);
+                    i--; // Para no saltarse 1 tras eliminar en el ArrayList
+                }
+            }
+
+            // Actualizar movimiento de asteroides dentro del area
+            for (Asteroide ast : asteroides1) {
+                ast.update(delta);
+            }
+
+            // Colisiones entre asteroides y sus rebotes
+            rebotesColisionesAst();
         }
     }
 
@@ -348,6 +350,22 @@ public class PantallaJuego extends Pantalla implements Screen {
             .build();
         this.agregarBala(bala);
         soundBala.play();
+    }
+
+    private void collisionHandling() {
+        // Dibujar asteroides y manejo de colisiones
+        for (int i = 0; i < asteroides1.size(); i++) {
+            Asteroide ast = asteroides1.get(i);
+
+            // Perdió vida / Game over
+            if (nave.checkCollision(ast)) {
+
+                // Asteroide se destruye con el choque
+                asteroides1.remove(i);
+                asteroides2.remove(i);
+                i--;
+            }
+        }
     }
 
 

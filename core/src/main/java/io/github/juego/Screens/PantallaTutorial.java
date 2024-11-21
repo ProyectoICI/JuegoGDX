@@ -14,13 +14,15 @@ public class PantallaTutorial extends Pantalla implements Screen {
 
     public PantallaTutorial(SpaceNavigation game) {
         super(game);
+        this.game = game;
+
+        initialize();
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
         camera.update();
-
     }
 
     /* -------------------------------------- */
@@ -29,7 +31,8 @@ public class PantallaTutorial extends Pantalla implements Screen {
 
     @Override
     protected void initialize() {
-
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 1200, 800);
     }
 
     @Override
