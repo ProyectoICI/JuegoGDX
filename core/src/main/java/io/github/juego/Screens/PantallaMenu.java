@@ -50,18 +50,6 @@ public class PantallaMenu extends Pantalla implements Screen {
     @Override
     protected void gameLogic(float delta) {
         manejarInput();
-        /*if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game,
-                game.getRondaDefault(),
-                game.getVidasDefault(),
-                0,
-                game.getVelXAsteroidesDefault(),
-                game.getVelYAsteroidesDefault(),
-                game.getCantAsteroidesDefault());
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
-        }*/
     }
 
     @Override
@@ -75,6 +63,11 @@ public class PantallaMenu extends Pantalla implements Screen {
         game.getBatch().begin();
         game.getBatch().draw(backgroundImage, 0, 0, 1200, 800);
         BitmapFont font = game.getFont();
+
+        BitmapFont TitleFont = game.getFont();
+        TitleFont.setColor(0, 1, 1, 1);
+        TitleFont.draw(game.getBatch(), "Navegador Espacial", 50, 500);
+
         for (int i = 0; i < menuOptions.length; i++) {
             if (i == selectedIndex) {
                 font.setColor(1, 1, 0, 1); // Amarillo si está seleccionado
@@ -165,7 +158,7 @@ public class PantallaMenu extends Pantalla implements Screen {
                 game.getVelYAsteroidesDefault(),
                 game.getCantAsteroidesDefault()));
             } else if (selectedIndex == 1) {
-
+                game.setScreen(new PantallaAjustes(game));
             } else if (selectedIndex == 2) {
                 game.setScreen(new PantallaTutorial(game));
             }
