@@ -16,6 +16,53 @@ public class Misil extends GameObject implements Colisionable {
 	private boolean destroyed = false;
 	private Sprite spr;
 
+    public Misil(BuilderMisil builder) {
+        super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
+        this.xSpeed = builder.xSpeed;
+        this.ySpeed = builder.ySpeed;
+        this.spr = new Sprite(builder.spr);
+        this.spr.setPosition(builder.x, builder.y);
+    }
+
+    public void update(float delta) {
+        spr.setPosition(spr.getX()+xSpeed * delta, spr.getY()+ySpeed * delta);
+        if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth()) {
+            destroyed = true;
+        }
+        if (spr.getY() < 0 || spr.getY()+spr.getHeight() > Gdx.graphics.getHeight()) {
+            destroyed = true;
+        }
+
+    }
+
+    // TODO: Implementar la interfaz
+    @Override
+    public boolean checkCollision(GameObject asteroide) {
+        if(spr.getBoundingRectangle().overlaps(asteroide.getArea())){
+            // Se destruyen ambos
+            onCollision(asteroide);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onCollision(GameObject asteroide) { this.destroyed = true; }
+
+    public void draw(SpriteBatch batch) {
+        spr.draw(batch);
+    }
+
+    public boolean isDestroyed() {return destroyed;}
+
+    // ----------------------------------------------------
+    // ------------ Builder estatico de Misil -------------
+    // ----------------------------------------------------
+    /**
+     * Clase anidada BuilderMisil que nos serviría para implementar el patrón 'Builder' en el juego, simplificando
+     * los constructores además de modularizando de mejor manera el código al poder tener varias formas de crear un objeto
+     * especificado con las funciones que tenga el Builder.
+     */
     public static class BuilderMisil implements ObjetosBuilder<Misil> {
 
         private float x;
@@ -58,44 +105,5 @@ public class Misil extends GameObject implements Colisionable {
             return new Misil(this);
         }
     }
-
-    public Misil(BuilderMisil builder) {
-        super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
-        this.xSpeed = builder.xSpeed;
-        this.ySpeed = builder.ySpeed;
-        this.spr = new Sprite(builder.spr);
-        this.spr.setPosition(builder.x, builder.y);
-    }
-
-    public void update(float delta) {
-        spr.setPosition(spr.getX()+xSpeed * delta, spr.getY()+ySpeed * delta);
-        if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth()) {
-            destroyed = true;
-        }
-        if (spr.getY() < 0 || spr.getY()+spr.getHeight() > Gdx.graphics.getHeight()) {
-            destroyed = true;
-        }
-
-    }
-
-    // TODO: Implementar la interfaz
-    @Override
-    public boolean checkCollision(GameObject asteroide) {
-        if(spr.getBoundingRectangle().overlaps(asteroide.getArea())){
-            // Se destruyen ambos
-            onCollision(asteroide);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onCollision(GameObject asteroide) { this.destroyed = true; }
-
-    public void draw(SpriteBatch batch) {
-        spr.draw(batch);
-    }
-
-    public boolean isDestroyed() {return destroyed;}
 
 }

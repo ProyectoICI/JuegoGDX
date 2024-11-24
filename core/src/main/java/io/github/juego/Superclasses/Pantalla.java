@@ -3,6 +3,11 @@ package io.github.juego.Superclasses;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import io.github.juego.SpaceNavigation;
 
+/**
+ * Clase necesaria para simplificar y organizar de mejor forma los pasos que deben de seguir las clases Pantalla,
+ * esto es debido a que obliga a cada clase Pantalla a seguir el orden especificado por el 'renderPipeline' para organizar
+ * de mejor forma los elementos en pantalla. Esto se logra siguiendo e implementando el patrón de diseño "Template Method".
+ */
 public abstract class Pantalla {
 
     protected SpaceNavigation game;

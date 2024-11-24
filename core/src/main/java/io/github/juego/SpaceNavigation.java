@@ -1,9 +1,12 @@
 package io.github.juego;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import io.github.juego.models.GameSettings;
 import io.github.juego.Screens.PantallaMenu;
 
@@ -14,14 +17,22 @@ public class SpaceNavigation extends Game {
 	private BitmapFont font;
 	private int highScore;
 
-	public void create() {
-		highScore = 0;
-		batch = new SpriteBatch();
-		font = new BitmapFont(); // usa Arial font x defecto
-		font.getData().setScale(2f);
-		Screen ss = new PantallaMenu(this);
-		this.setScreen(ss);
-	}
+    public void create() {
+        highScore = 0;
+        batch = new SpriteBatch();
+
+        // Generamos un font de alta calidad usando FreeType
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Ubuntu-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 24;
+        parameter.minFilter = TextureFilter.Linear;
+        parameter.magFilter = TextureFilter.Linear;
+        font = generator.generateFont(parameter);
+        generator.dispose();
+
+        Screen ss = new PantallaMenu(this);
+        this.setScreen(ss);
+    }
 
 	public void render() {
 		super.render(); // important!

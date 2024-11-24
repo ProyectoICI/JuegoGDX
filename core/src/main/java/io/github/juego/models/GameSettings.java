@@ -1,5 +1,10 @@
 package io.github.juego.models;
 
+/**
+ * Clase dedicada a guardar las ajustes del juego, seguiría el patrón
+ * Singleton para llevarlo a cabo para una experiencia más customizable
+ * con solamente una instancia de ajustes para la totalidad del juego.
+ */
 public class GameSettings {
     // Variables por defecto para el juego
     private static GameSettings instance;

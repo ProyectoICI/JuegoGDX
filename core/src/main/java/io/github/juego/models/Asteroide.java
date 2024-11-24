@@ -20,55 +20,6 @@ public class Asteroide extends GameObject implements Colisionable {
     private Sprite spr;
     private AIBehaviour aiBehaviour;
 
-    public static class BuilderAsteroide implements ObjetosBuilder<Asteroide> {
-        private float x;
-        private float y;
-        private float xSpeed;
-        private float ySpeed;
-        private float size;
-        private Sprite spr;
-        private AIBehaviour aiBehaviour;
-
-        @Override
-        public BuilderAsteroide x(float x) {
-            this.x = x;
-            return this;
-        }
-
-        @Override
-        public BuilderAsteroide y(float y) {
-            this.y = y;
-            return this;
-        }
-
-        @Override
-        public BuilderAsteroide xSpeed(float xSpeed) {
-            this.xSpeed = xSpeed;
-            return this;
-        }
-
-        @Override
-        public BuilderAsteroide ySpeed(float ySpeed) {
-            this.ySpeed = ySpeed;
-            return this;
-        }
-
-        public BuilderAsteroide size(float size) {
-            this.size = size;
-            return this;
-        }
-
-        public BuilderAsteroide sprite(Texture tx) {
-            this.spr = new Sprite(tx);
-            return this;
-        }
-
-        @Override
-        public Asteroide build() {
-            return new Asteroide(this);
-        }
-    }
-
     public Asteroide(BuilderAsteroide builder) {
         super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
 
@@ -161,5 +112,63 @@ public class Asteroide extends GameObject implements Colisionable {
 
     @Override
     public AIBehaviour getAIBehavior() { return aiBehaviour; }
+
+
+    // --------------------------------------------------------
+    // ------------ Builder estatico de Asteroide -------------
+    // --------------------------------------------------------
+    /**
+     * Clase anidada BuilderAsteroide que nos serviría para implementar el patrón 'Builder' en el juego, simplificando
+     * los constructores además de modularizando de mejor manera el código al poder tener varias formas de crear un objeto
+     * especificado con las funciones que tenga el Builder.
+     */
+    public static class BuilderAsteroide implements ObjetosBuilder<Asteroide> {
+        private float x;
+        private float y;
+        private float xSpeed;
+        private float ySpeed;
+        private float size;
+        private Sprite spr;
+        private AIBehaviour aiBehaviour;
+
+        @Override
+        public BuilderAsteroide x(float x) {
+            this.x = x;
+            return this;
+        }
+
+        @Override
+        public BuilderAsteroide y(float y) {
+            this.y = y;
+            return this;
+        }
+
+        @Override
+        public BuilderAsteroide xSpeed(float xSpeed) {
+            this.xSpeed = xSpeed;
+            return this;
+        }
+
+        @Override
+        public BuilderAsteroide ySpeed(float ySpeed) {
+            this.ySpeed = ySpeed;
+            return this;
+        }
+
+        public BuilderAsteroide size(float size) {
+            this.size = size;
+            return this;
+        }
+
+        public BuilderAsteroide sprite(Texture tx) {
+            this.spr = new Sprite(tx);
+            return this;
+        }
+
+        @Override
+        public Asteroide build() {
+            return new Asteroide(this);
+        }
+    }
 
 }

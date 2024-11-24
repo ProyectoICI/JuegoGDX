@@ -1,33 +1,26 @@
 # JuegoGDX
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+## Platformas
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
-
-## Platforms
-
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+- `core`: Módulo que contendría toda la lógica del programa (packages, .java, etc.)
+- `lwjgl3`: Plataforma de escritorio LWJGL3 que se utiliza para **ejecutar el programa**.
 
 ## Gradle
+El proyecto utiliza Gradle para manejar las dependencias que utiliza el programa, en este caso
+debido a que utilizamos la librería `freetype` de LibGDX que sería externa a las librerías por defecto
+de LibGDX.
+Para hacer build al projecto se tendría que ejecutar `./gradlew clean build` para posterior ejecución
+del juego mismo.
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+Se recomienda tener una configuración `Run` en el caso de IntelliJ, el cual permitirá ejecutar el comando
+build y ejecutar el archivo .java Lwjgl3Launcher de manera sucesiva para mayor comodidad.
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+## Instalación
+Para instalar el programa simplemente debemos arrastrar/clonar el proyecto a un directorio en el que
+deseamos tener el juego y sus binarios, y asegurarse que no existan conflictos de directorios en el caso de
+importar los packages manualmente.
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+## Ejecutar
+Para ejecutar el programa debemos de ir al package lwjgl3 que contendría el .java para ejecutar el programa,
+en donde, al correr el .java Lwjgl3Launcher dentro del directorio "io/github/juego/lwjgl3", se podrá ejecutar
+el juego sin problemas.

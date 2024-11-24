@@ -84,9 +84,9 @@ public class PantallaJuego extends Pantalla implements Screen {
             .y(30)
             .xSpeed(0)
             .ySpeed(0)
-            .texture(new Texture(Gdx.files.internal("MainShip3.png")))
+            .texture(new Texture(Gdx.files.internal("naves/MainShip3.png")))
             .sonidoHerido(Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")))
-            .txBala(new Texture(Gdx.files.internal("Rocket2.png")))
+            .txBala(new Texture(Gdx.files.internal("misiles/Rocket2.png")))
             .soundBala(Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")))
             .build();
     }
@@ -103,7 +103,7 @@ public class PantallaJuego extends Pantalla implements Screen {
         gameMusic.play();
 
         soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-        txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+        txBala = new Texture(Gdx.files.internal("misiles/Rocket2.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
     }
@@ -256,7 +256,7 @@ public class PantallaJuego extends Pantalla implements Screen {
                 .size(size)
                 .xSpeed(xSpeed)
                 .ySpeed(ySpeed)
-                .sprite(new Texture(Gdx.files.internal("aGreyMedium4.png")))
+                .sprite(new Texture(Gdx.files.internal("asteroides/aGreyMedium4.png")))
                 .build();
 
             asteroideNuevo.setAIBehavior(new RoamArea());

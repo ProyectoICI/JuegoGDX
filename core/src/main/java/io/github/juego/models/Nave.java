@@ -26,81 +26,6 @@ public class Nave extends GameObject implements Colisionable {
     private int tiempoHeridoMax = 50;
     private int tiempoHerido;
 
-    /*
-    public Nave(float x, float y, float xVel, float yVel, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
-        super(x, y, xVel, yVel);
-        sonidoHerido = soundChoque;
-        this.soundBala = soundBala;
-        this.txBala = txBala;
-        spr = new Sprite(tx);
-        spr.setPosition(x, y);
-        //spr.setOriginCenter();
-        spr.setBounds(x, y, 45, 45);
-
-    }
-    */
-
-    public static class BuilderNave implements ObjetosBuilder<Nave> {
-
-        private float x;
-        private float y;
-        private float xVel;
-        private float yVel;
-        private Sprite spr;
-        private Sound sonidoHerido;
-        private Sound soundBala;
-        private Texture txBala;
-
-        @Override
-        public BuilderNave x(float x) {
-            this.x = x;
-            return this;
-        }
-
-        @Override
-        public BuilderNave y(float y) {
-            this.y = y;
-            return this;
-        }
-
-        @Override
-        public BuilderNave xSpeed(float xSpeed) {
-            this.xVel = xSpeed;
-            return this;
-        }
-
-        @Override
-        public BuilderNave ySpeed(float ySpeed) {
-            this.yVel = ySpeed;
-            return this;
-        }
-
-        public BuilderNave texture(Texture tx) {
-            this.spr = new Sprite(tx);
-            return this;
-        }
-
-        public BuilderNave sonidoHerido(Sound sonidoHerido) {
-            this.sonidoHerido = sonidoHerido;
-            return this;
-        }
-
-        public BuilderNave soundBala(Sound soundBala) {
-            this.soundBala = soundBala;
-            return this;
-        }
-
-        public BuilderNave txBala(Texture txBala) {
-            this.txBala = txBala;
-            return this;
-        }
-
-        @Override
-        public Nave build() {
-            return new Nave(this);
-        }
-    }
-
     public Nave(BuilderNave builder) {
         super(builder.x, builder.y, builder.xVel, builder.yVel);
         this.sonidoHerido = builder.sonidoHerido;
@@ -129,20 +54,6 @@ public class Nave extends GameObject implements Colisionable {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP))  {
                 yVel+=60;
             }
-
-	        /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) spr.setRotation(++rotacion);
-	        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) spr.setRotation(--rotacion);
-
-	        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-	        	xVel -=Math.sin(Math.toRadians(rotacion));
-	        	yVel +=Math.cos(Math.toRadians(rotacion));
-	        	System.out.println(rotacion+" - "+Math.sin(Math.toRadians(rotacion))+" - "+Math.cos(Math.toRadians(rotacion))) ;
-	        }
-	        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-	        	xVel +=Math.sin(Math.toRadians(rotacion));
-	        	yVel -=Math.cos(Math.toRadians(rotacion));
-
-	        }*/
 
             // que se mantenga dentro de los bordes de la ventana
             if (x + xVel * delta < 0 || x + xVel * delta + spr.getWidth() > Gdx.graphics.getWidth())
@@ -213,5 +124,75 @@ public class Nave extends GameObject implements Colisionable {
 
     public float getSpriteHeight() { return spr.getHeight(); }
 
+
+
+    // ----------------------------------------------------
+    // ------------ Builder estatico de Nave --------------
+    // ----------------------------------------------------
+    /**
+     * Clase anidada BuilderNave que nos serviría para implementar el patrón 'Builder' en el juego, simplificando
+     * los constructores además de modularizando de mejor manera el código al poder tener varias formas de crear un objeto
+     * especificado con las funciones que tenga el Builder.
+     */
+    public static class BuilderNave implements ObjetosBuilder<Nave> {
+
+        private float x;
+        private float y;
+        private float xVel;
+        private float yVel;
+        private Sprite spr;
+        private Sound sonidoHerido;
+        private Sound soundBala;
+        private Texture txBala;
+
+        @Override
+        public BuilderNave x(float x) {
+            this.x = x;
+            return this;
+        }
+
+        @Override
+        public BuilderNave y(float y) {
+            this.y = y;
+            return this;
+        }
+
+        @Override
+        public BuilderNave xSpeed(float xSpeed) {
+            this.xVel = xSpeed;
+            return this;
+        }
+
+        @Override
+        public BuilderNave ySpeed(float ySpeed) {
+            this.yVel = ySpeed;
+            return this;
+        }
+
+        public BuilderNave texture(Texture tx) {
+            this.spr = new Sprite(tx);
+            return this;
+        }
+
+        public BuilderNave sonidoHerido(Sound sonidoHerido) {
+            this.sonidoHerido = sonidoHerido;
+            return this;
+        }
+
+        public BuilderNave soundBala(Sound soundBala) {
+            this.soundBala = soundBala;
+            return this;
+        }
+
+        public BuilderNave txBala(Texture txBala) {
+            this.txBala = txBala;
+            return this;
+        }
+
+        @Override
+        public Nave build() {
+            return new Nave(this);
+        }
+    }
 
 }
