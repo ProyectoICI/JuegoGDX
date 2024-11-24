@@ -4,13 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
 import io.github.juego.Superclasses.Pantalla;
 
 
 public class PantallaMenu extends Pantalla implements Screen {
-
+    private Texture backgroundImage;
+    private int selectedIndex = 0;
+    private final String[] menuOptions = {"Jugar", "Ajustes", "Tutorial"};
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
 
@@ -19,6 +23,7 @@ public class PantallaMenu extends Pantalla implements Screen {
         this.game = game;
 
         initialize();
+        loadAssets();
 	}
 
 	@Override
@@ -38,12 +43,14 @@ public class PantallaMenu extends Pantalla implements Screen {
 
     @Override
     protected void loadAssets() {
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
     }
 
     @Override
     protected void gameLogic(float delta) {
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        manejarInput();
+        /*if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             Screen ss = new PantallaJuego(game,
                 game.getRondaDefault(),
                 game.getVidasDefault(),
@@ -54,20 +61,28 @@ public class PantallaMenu extends Pantalla implements Screen {
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
-        }
+        }*/
     }
 
     @Override
     protected void setupUI(float delta) {
+
         ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
-        game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
-
+        game.getBatch().draw(backgroundImage, 0, 0, 1200, 800);
+        BitmapFont font = game.getFont();
+        for (int i = 0; i < menuOptions.length; i++) {
+            if (i == selectedIndex) {
+                font.setColor(1, 1, 0, 1); // Amarillo si está seleccionado
+            } else {
+                font.setColor(1, 1, 1, 1);
+            }
+            font.draw(game.getBatch(), menuOptions[i], 140, 400 - i * 50);
+        }
         game.getBatch().end();
     }
 
@@ -132,4 +147,32 @@ public class PantallaMenu extends Pantalla implements Screen {
 
 	}
 
+    private void manejarInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            selectedIndex = (selectedIndex - 1 + menuOptions.length) % menuOptions.length;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            selectedIndex = (selectedIndex + 1) % menuOptions.length;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+
+            if (selectedIndex == 0) {
+                game.setScreen(new PantallaJuego(game,
+                game.getRondaDefault(),
+                game.getVidasDefault(),
+                0,
+                game.getVelXAsteroidesDefault(),
+                game.getVelYAsteroidesDefault(),
+                game.getCantAsteroidesDefault()));
+            } else if (selectedIndex == 1) {
+
+            } else if (selectedIndex == 2) {
+                game.setScreen(new PantallaTutorial(game));
+            }
+            dispose();
+        }
+    }
+
+
 }
+
