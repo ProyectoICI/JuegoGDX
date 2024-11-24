@@ -108,7 +108,6 @@ public class PantallaJuego extends Pantalla implements Screen {
 
     }
 
-    // TODO: Simplificar y modularizar la lógica del juego
     @Override
     protected void gameLogic(float delta) {
 
@@ -139,6 +138,7 @@ public class PantallaJuego extends Pantalla implements Screen {
 
         CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(1f);
+        game.getFont().setColor(1,1,1,1);
         game.getFont().draw(
             batch,
             str,

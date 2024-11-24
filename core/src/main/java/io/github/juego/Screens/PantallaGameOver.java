@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.juego.SpaceNavigation;
 import io.github.juego.Superclasses.Pantalla;
 
 
 public class PantallaGameOver extends Pantalla implements Screen {
-
+    private Texture backgroundImage;
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
 
@@ -19,7 +20,7 @@ public class PantallaGameOver extends Pantalla implements Screen {
 		this.game = game;
 
         initialize();
-
+        loadAssets();
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class PantallaGameOver extends Pantalla implements Screen {
 
     @Override
     protected void loadAssets() {
-
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
     }
 
     @Override
@@ -61,8 +62,11 @@ public class PantallaGameOver extends Pantalla implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Game Over !!! ", 120, 400,400,1,true);
-        game.getFont().draw(game.getBatch(), "Pincha en cualquier lado para reiniciar ...", 100, 300);
+        game.getBatch().draw(backgroundImage, 0, 0, 1200, 800);
+
+
+        game.getFont().draw(game.getBatch(), "Game Over !!! ", 100, 400);
+        game.getFont().draw(game.getBatch(), "Presiona cualquier tecla para continuar...", 100, 300);
 
         game.getBatch().end();
     }
@@ -133,13 +137,7 @@ public class PantallaGameOver extends Pantalla implements Screen {
     /* -------------------------------------- */
 
     private Screen crearPantallaJuego() {
-        Screen ss = new PantallaJuego(game,
-            game.getRondaDefault(),
-            game.getVidasDefault(),
-            0,
-            game.getVelXAsteroidesDefault(),
-            game.getVelYAsteroidesDefault(),
-            game.getCantAsteroidesDefault());
+        Screen ss = new PantallaMenu(game);
         ss.resize(1200, 800);
         return ss;
     }

@@ -150,13 +150,7 @@ public class PantallaMenu extends Pantalla implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 
             if (selectedIndex == 0) {
-                game.setScreen(new PantallaJuego(game,
-                game.getRondaDefault(),
-                game.getVidasDefault(),
-                0,
-                game.getVelXAsteroidesDefault(),
-                game.getVelYAsteroidesDefault(),
-                game.getCantAsteroidesDefault()));
+                game.setScreen(new PantallaSeleccion(game));
             } else if (selectedIndex == 1) {
                 game.setScreen(new PantallaAjustes(game));
             } else if (selectedIndex == 2) {
