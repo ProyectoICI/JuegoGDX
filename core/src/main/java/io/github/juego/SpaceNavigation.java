@@ -16,6 +16,7 @@ public class SpaceNavigation extends Game {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private int highScore;
+    private int dificultad;
 
     public void create() {
         highScore = 0;
@@ -58,6 +59,10 @@ public class SpaceNavigation extends Game {
 	public void setHighScore(int highScore) {
 		this.highScore = highScore;
 	}
+
+    public int getDificultad() { return dificultad; }
+
+    public void setDificultad(int dificultad) { this.dificultad = dificultad; }
 
 
     // Setters y Getters para las variables por defecto

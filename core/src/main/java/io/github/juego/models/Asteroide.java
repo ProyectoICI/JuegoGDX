@@ -19,6 +19,7 @@ public class Asteroide extends GameObject implements Colisionable {
     private float ySpeed;
     private Sprite spr;
     private AIBehaviour aiBehaviour;
+    private GameObject objective;
 
     public Asteroide(BuilderAsteroide builder) {
         super(builder.x, builder.y, builder.xSpeed, builder.ySpeed);
@@ -27,7 +28,7 @@ public class Asteroide extends GameObject implements Colisionable {
         this.y = builder.y;
         this.xSpeed = builder.xSpeed;
         this.ySpeed = builder.ySpeed;
-        this.spr = new Sprite(builder.spr);
+        this.spr = builder.spr;
         this.aiBehaviour = builder.aiBehaviour;
 
         // Validate that the edge of the sphere does not go out of bounds
@@ -44,7 +45,7 @@ public class Asteroide extends GameObject implements Colisionable {
     @Override
     public void update(float delta) {
         if (aiBehaviour != null) {
-            aiBehaviour.state(this, null, delta);
+            aiBehaviour.state(this, objective, delta);
         }
     }
 
@@ -113,6 +114,9 @@ public class Asteroide extends GameObject implements Colisionable {
     @Override
     public AIBehaviour getAIBehavior() { return aiBehaviour; }
 
+    @Override
+    public void setObjective(GameObject objective) { this.objective = objective; }
+
 
     // --------------------------------------------------------
     // ------------ Builder estatico de Asteroide -------------
@@ -160,8 +164,8 @@ public class Asteroide extends GameObject implements Colisionable {
             return this;
         }
 
-        public BuilderAsteroide sprite(Texture tx) {
-            this.spr = new Sprite(tx);
+        public BuilderAsteroide sprite(Sprite spr) {
+            this.spr = spr;
             return this;
         }
 

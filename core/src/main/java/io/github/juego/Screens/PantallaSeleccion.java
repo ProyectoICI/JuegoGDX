@@ -178,13 +178,13 @@ public class PantallaSeleccion extends Pantalla implements Screen {
             // Handle selection
             switch (selectedIndex) {
                 case 0:
-                    // Set difficulty to easy
+                    game.setDificultad(1);
                     break;
                 case 1:
-                    // Set difficulty to normal
+                    game.setDificultad(2);
                     break;
                 case 2:
-                    // Set difficulty to hard
+                    game.setDificultad(3);
                     break;
             }
             // Transition to the next screen
