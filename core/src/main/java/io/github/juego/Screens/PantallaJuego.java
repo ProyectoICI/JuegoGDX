@@ -389,6 +389,7 @@ public class PantallaJuego extends Pantalla implements Screen {
             for (int i = 0; i < balas.size(); i++) {
                 Misil misil = balas.get(i);
                 misil.update(delta);
+
                 for (int j = 0; j < asteroides1.size(); j++) {
                     if (misil.checkCollision(asteroides1.get(j))) {
                         explosionSound.play();
@@ -396,6 +397,15 @@ public class PantallaJuego extends Pantalla implements Screen {
                         asteroides2.remove(j);
                         j--;
                         score += 10;
+                    }
+                }
+
+                for (int k = 0; k < astEnemigos.size(); k++) {
+                    if (misil.checkCollision(astEnemigos.get(k))) {
+                        explosionSound.play();
+                        astEnemigos.remove(k);
+                        k--;
+                        score += 20;
                     }
                 }
 

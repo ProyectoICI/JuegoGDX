@@ -1,6 +1,5 @@
 package io.github.juego.strategies.ai;
 
-import com.badlogic.gdx.Gdx;
 import io.github.juego.Interfaces.AIBehaviour;
 import io.github.juego.Superclasses.GameObject;
 
