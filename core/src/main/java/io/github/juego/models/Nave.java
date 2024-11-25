@@ -71,8 +71,6 @@ public class Nave extends GameObject implements Colisionable {
         }
     }
 
-
-    // TODO: Implementar la interfaz
     @Override
     public boolean checkCollision(GameObject asteroide) {
         if(!herido && asteroide.getArea().overlaps(spr.getBoundingRectangle())){

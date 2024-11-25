@@ -35,7 +35,6 @@ public class Misil extends GameObject implements Colisionable {
 
     }
 
-    // TODO: Implementar la interfaz
     @Override
     public boolean checkCollision(GameObject asteroide) {
         if(spr.getBoundingRectangle().overlaps(asteroide.getArea())){
